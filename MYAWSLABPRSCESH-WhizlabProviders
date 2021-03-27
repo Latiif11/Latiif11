@@ -1,0 +1,4267 @@
+Introduction to Amazon Elastic Compute Cloud (EC2)
+Lab Details
+1.	This lab walks you through the steps to launch and configure a virtual machine in the Amazon cloud.
+2.	You will practice using Amazon Machine Images to launch Amazon EC2 Instances and use key pairs for SSH authentication to log into your instance. You will create a web page and publish it.
+3.	Duration: 30 minutes
+4.	AWS Region: US East (N. Virginia) us-east-1
+Introduction
+What is EC2
+•	AWS defines it as Elastic Compute Cloud.
+•	It’s a virtual environment where “you rent” to have your environment created, without purchasing.
+•	Amazon refers to these virtual machines as Instances.
+•	Preconfigured templates can be used to launch instances. These templates are referred to as images. Amazon provides these images in the form of AMIs (Amazon Machine Images).
+•	Allows you to install custom applications and services.
+•	Scaling of infrastructure i.e., up or down is easy based on the demand you face.
+•	AWS provides multiple configurations of CPU, memory, storage etc., through which you can pick the flavor that's required for your environment.
+•	No limitation on storage. You can pick the storage based on the type of the instance that you are working on.
+•	Temporary storage volumes are provided, which are called Instance Store Volumes.  Data stored in this gets deleted once the instance is terminated.
+•	Persistent storage volumes are available and are referred to as EBS (Elastic Block Store) volumes.
+•	These instances can be placed at multiple locations which are referred to as Regions and Availability Zones (AZ).
+•	You can have your Instances distributed across multiple AZs i.e., within a single Region, so that if an instance fails, AWS automatically remaps the address to another AZ.
+•	Instances deployed in one AZ can be migrated to another AZ.
+•	To manage instances, images, and other EC2 resources, you can optionally assign your own metadata to each resource in the form of tags.
+•	A Tag is a label that you assign to an AWS resource.  It contains a key and an optional value, both of which are defined by you.
+•	Each AWS account comes with a set of default limits on the resources on a per-Region basis.
+•	For any increase in the limit you need to contact AWS.
+•	To work with the created instances, we use Key Pairs.
+Architecture Diagram
+
+ 
+Task Details
+1.	Launching Lab Environment
+2.	Launching an EC2 Instance
+3.	SSH into EC2 Instance
+4.	Install an Apache Server
+5.	Create and publish page
+6.	Validation of the lab
+Lab Steps
+Task 1 : Launching Lab Environment
+1.	Launch lab environment by clicking on  . This will create an AWS environment with the resources required for this lab.
+2.	Once your lab environment is created successfully,   will be active. Click on  , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on   again.
+3.	If you have logged into other aws accounts in the same browser, after clicking on the  , you will be redirected to a page asking you to logout from the other aws account. 
+  
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2 : Launching an EC2 Instance
+1.	Make sure you are in US East (N. Virginia) us-east-1 Region. 
+2.	Navigate to EC2 by clicking on the   menu in the top, then click on   in the   section.
+3.	Switch off the New EC2 experience. Edit the feedback message and select yes for the experience. Click on  . This will allow us to use the old console.
+ 
+ 
+4.	Navigate to  on the left panel and click on  
+5.	Choose an Amazon Machine Image (AMI): Search for Amazon Linux 2 AMI in the search box and click on the select button.
+ 
+6.	Choose an Instance Type: select   and then click on the  
+7.	Configure Instance Details: No need to change anything in this step, click on  
+8.	Add Storage: No need to change anything in this step, click on  
+9.	Add Tags: Click on  
+o	Key    : Name
+o	Value    : MyEC2Server
+o	Click on  
+10.	Configure Security Group:
+o	To add SSH,
+	Choose Type:  
+	Source: Custom (Allow specific IP address) or Anywhere (From ALL IP addresses accessible).
+o	For HTTP,
+	Click on  
+	Choose Type: HTTP 
+	Source:  (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	For HTTPS, 
+	Click on  
+	Choose Type: HTTPS 
+	Source:  (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	After that, click on  
+11.	Review and Launch : Review all settings and click on  .
+12.	Key Pair : Create a new key pair, enter MyEC2Key, click on   , and store it on your local machine, Click on  .
+13.	Launch Status: Your instance is now launching, Click on the instance ID and wait for complete initialization of instance till status change to  . 
+14.	Note down the sample IPv4 Public IP Address of the EC2 instance. A sample is shown in the screenshot below.
+ 
+Task 3 : SSH into EC2 Instance
+•	Please follow the steps in SSH into EC2 Instance.
+Task 4: Install an Apache Server
+1.	Switch to root user: sudo su
+2.	Now run the updates using the following command: 
+o	yum -y update
+3.	Once completed, lets install and run an apache server
+o	Install the Apache web server: 
+	yum install httpd
+o	When prompted, Press "Y" to confirm.
+o	Start the web server 
+	systemctl start httpd
+o	Now enable httpd: 
+	systemctl enable httpd
+o	Check the webserver status
+	systemctl status httpd
+o	You can see Active status is running.
+o	You can test that your web server is properly installed and started by entering the public IP address of your EC2 instance in the address bar of a web browser. If your web server is running, then you see the Apache test page. If you don't see the Apache test page, then verify whether you followed the above steps properly and check your inbound rules for the security group that you created.
+Task 5 : Create and publish the page
+1.	Navigate to the HTML folder where we will create an HTML page to test.
+o	cd /var/www/html/
+2.	Create a sample test.html file using nano editor: 
+o	nano test.html
+3.	Enter sample HTML content provided below in the file and save the file with Ctrl+X and press "y" to confirm the save. Then press "Enter" to confirm the file name.
+o	<HTML> Hi Whizlabs, I am a public page </HTML>
+4.	Restart the webserver by using the following command: 
+o	systemctl start httpd
+5.	Now enter the file name after the public IP which you got when you created the ec2 instance in the browser, and you can see your HTML content.
+o	Sample URL: http://107.21.198.65/test.html
+                
+       6. If you can see the above text in the browser, then you have successfully completed the lab.
+Task 6 : Validation of the lab
+1.	Once the lab steps are completed, please click on the   button on the right side panel.
+2.	This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+3.	Sample output : 
+ 
+Completion and Conclusion
+1.	You have successfully created and launched Amazon EC2 Instance.
+2.	You have successfully logged into the EC2 instance by SSH.
+3.	You have successfully created a webpage and published 
+
+Launch a Spot Instance with Amazon EC2
+Lab Details
+1.	This lab walks you through the steps to launch an EC2 Spot Instance using the AWS Management Console. You will also learn about Saving Summary and pricing history.
+2.	You will practice using Amazon Machine Image (AMI) to launch Amazon EC2 Spot Instance and use key pairs for SSH authentication to log into your instance.
+3.	You will create a web page and publish it.
+4.	Duration: 1 hour
+5.	AWS Region: US East (N. Virginia)
+Introduction
+What is EC2 Spot Instance
+•	Spot Instances are an unused part of Amazon EC2, using which you can save up to 90% on cost as compared to On-Demand cost, but AWS can interrupt your spot instances if the Current Price is higher than the Maximum Price you specified.
+•	Spot uses the same EC2 instances (AMI and instance type) what On-Demand and Reserved Instances use. It is the best to fit for use cases where data is reproducible and can sustain the interruption at any point in time.
+•	You can use Spot Instance as additional compute capacity to your On-Demand or Reserved Instances, where fault-tolerant is acceptable.
+•	EC2 Spot Instances can be launched the same way you launch EC2 Instance, like using Spot Fleet. Auto Scaling Groups or AWS Management Console.
+•	If AWS terminates or stops your Amazon EC2 Spot Instance within an hour then you will not be charged.
+•	However, if you choose to stop or terminate your newly launched Spot Instances by yourself, you will have to pay for the total number of seconds you have used.
+Task Details
+1.	Log into AWS Management Console.
+2.	Select an Amazon Linux Spot Instance from an Amazon Linux AMI 2.
+3.	Setting the price of a spot instance to Higher and lower values compared to a given value.
+4.	Launch the Spot Instance, to understand the difference between higher and lower prices.
+5.	Explore the Spot request, Saving Summary, and Pricing history options.
+6.	Test HTML page is launched or not using public IP.
+Architecture Diagram
+ 
+Lab Steps
+Task 1: Launching Lab Environment
+1.	Launch lab environment by clicking on  . This will create an AWS environment with the resources required for this lab.
+2.	Once your lab environment is created successfully,   will be active. Click on  , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on   again.
+3.	If you have logged into other aws accounts in the same browser, after clicking on the  , you will be redirected to a page asking you to logout from the other aws account. 
+ 
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+
+Task 2: Launching an EC2 Instance
+1.	Make sure you are in US East (N. Virginia) us-east-1 Region. 
+2.	Navigate to EC2 by clicking on the   menu in the top, then click on   in the   section.
+3.	Switch off the New EC2 experience button present on the left top of menu list. Click on  button on the feedback prompt.
+ 
+ 
+4.	Navigate to  on the left panel and click on  
+5.	Choose an Amazon Machine Image (AMI): Search for Amazon Linux 2 AMI in the search box and click on the select button.
+ 
+6.	Choose an Instance Type: select   and then click on the  
+7.	Configure Instance Details:
+o	Number of instances: 1
+o	Purchasing option: Check the Request Spot instance option
+ 
+Now you will see the current price of the instance in each of the Availability Zone. In the Maximum price, enter the price lower than shown there, If it’s 0.004, enter 0.003 or less.
+ 
+o	Persistent request: you will not check that option, but you should know what that means. Below is the explanation
+ 
+o	Request valid to: Any time
+ 
+o	Auto-assign Public IP: Select Enable
+o	Click on  .
+o	Under the User data section, enter the following script, (which creates an HTML page served by Apache):
+#!/bin/bash
+sudo su
+yum update -y
+yum install httpd -y
+systemctl start httpd
+systemctl enable httpd
+echo "<html><h1> Welcome to Whizlabs Server</h1><html>" >> /var/www/html/index.html
+ 
+8.	click on  
+9.	Add Storage: No need to change anything in this step, click on  
+10.	Add Tags: Click on  
+o	Key    : Name
+o	Value: Enter MySpotInstance
+o	C lick on  
+11.	Configure Security Group: Select Create a new security group,
+1.	Security group name: MyEC2SecurityGroup
+2.	Description: My EC2 Security Group
+3.	To add SSH: 
+	Choose Type: SSH
+	Protocol: TCP
+	Port Range: 22
+	Source: Select Custom, and enter 0.0.0.0/0
+ 
+4.	To add HTTP: 
+1.	Choose Type: HTTP
+2.	Protocol: TCP
+3.	Port Range: 80
+4.	Source: Select Custom, and enter 0.0.0.0/0
+
+  
+12.	After that, click on  
+13.	Review and Launch: Review all settings and click on  .
+14.	Key Pair: Create a new key pair, enter MySpotKey, click on   , and store them on your local machine, After that click on  
+15.	You will get an error message like this if your Maximum price was less than the Current price shown in the Availability zone and Current Price table.
+ 
+ 
+16.	Now Click on Back to Review Screen and Edit the maximum Price, set to 0.01, and then click on Review and Launch
+Note: If by mistake you clicked on the Cancel button, you have to repeat from Step 4.
+ 
+17.	Launch Status: Your instances are now launching, Navigate to Instances page from left menu and wait the status of the EC2 Instance changes to running and health check status changes to   .
+
+ 
+18.	To test if the HTML page published, copy the Public IP address and run it on the browser.
+ 
+Task 3: View the Spot Request
+1. Click on Spot Requests in the left sidebar, you will see the Spot requests. 
+2. Click on the Request ID, to see more details about your spot request.
+•	Max price: The highest price you are willing to pay for this EC2 Instance.
+•	Instance Id: Your current EC2 Instance, associated with this Spot request.
+•	Interruption: Terminate, if the current price of this Spot Instance goes higher than the original price, then it will be terminated automatically.
+•	Availability Zone: Current Price of the Spot instance varies by Availability Zone, There might be a possibility that in other AZ’ you can get the same instance at a lower price.
+ 
+ 
+Task 4: Explore the Saving Summary and Pricing history
+1. Click on the Spot Instance in the Left sidebar and you will see the Spot requests.2.
+2. On the right top corner, you will see two buttons named Saving summary and Pricing history, Let’s explore those options too. 
+3. Click on the Saving summary, below you can see, you will save a total of 70% as compared to on-demand instances. Details are also available.
+ 
+4. Click on the Close button, and let’s explore the Pricing history option.
+5. Here you will see the pricing history, but wait a minute, it’s showing for some other Instance size, let’s modify the options.
+•	Graph: Availability Zones
+•	Instance type: Enter t2.micro
+•	Platform: Linux/UNIX
+•	Date Range: Select 3 months
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Task 5: Validation Test
+1.	Once the lab steps are completed, please click on the   button on the right side panel.
+2.	This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+3.	Sample output : 
+ 
+Task 6: Clean up section, terminate EC2 Spot Instance
+1.	Click on Spot Requests in the left sidebar and Select the present request.
+ 
+2.	On the right top, you will see Actions, Click on Cancel request.
+ 
+3.	Pop-up will come, Confirm the Spot request Id and Check the option to Terminate Instances, Click on Confirm button.
+ 
+4.	Now you will see the request, State as Cancelled and Status as instance-terminated-by-user. Which now means that clean up is done.
+ 
+5.	You can reverify the Termination state of Instance by clicking on Instances in the left sidebar, it will show the Instance state as Terminated.
+ 
+Completion and Conclusion
+1.	You have successfully created and launched Amazon EC2 Spot Instance.
+2.	You have successfully created a webpage and published it.
+1.	Sign out of AWS Account.
+Allocating Elastic IP and Associating it to EC2 Instance
+Lab Details:
+1.	This lab walks you through the steps to launch and configure a virtual machine in the Amazon cloud.
+2.	You will practice using Amazon Machine Images to launch Amazon EC2 Instances and use key pairs for SSH authentication to log into your instance. You will create a web page and publish it.
+3.	You will allocate and associate an Elastic IP.
+4.	Duration: 45 minutes
+5.	AWS Region: US East (N. Virginia) us-east-1
+Tasks:
+1.	Log into AWS Management Console.
+2.	Create an Amazon Linux Instance from an Amazon Linux AMI
+3.	Find your instance in the AWS Management Console.
+4.	SSH into your instance and configure your server as a web server.
+5.	Create and publish a sample test.html file.
+6.	Test the page with the public IP address of EC2 Instance created.
+7.	Allocate an Elastic IP and associate it to the EC2 Instance.
+8.	Test the page with Elastic IP address of EC2 Instance.
+Architecture Diagram:
+ 
+Lab Steps
+Task 1: Launching Lab Environment
+1.	Launch lab environment by clicking on  . This will create an AWS environment with the resources required for this lab.
+2.	Once your lab environment is created successfully,   will be active. Click on  , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on   again.
+3.	If you have logged into other aws accounts in the same browser, after clicking on the  , you will be redirected to a page asking you to logout from the other aws account. 
+  
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Launching an EC2 Instance
+1.	Navigate to EC2 by clicking on the   menu in the top, then click on   in the   section.
+2.	Switch off the New EC2 experience. Edit the feedback message and select yes for the experience. Click on  . This will allow us to use the old console.
+ 
+ 
+1.	Click on  
+2.	Choose an Amazon Machine Image (AMI): Search for Amazon Linux 2 AMI in the search box and click on the select button.
+ 
+3.	Choose an Instance Type: select   and then click on the  
+4.	Configure Instance Details: No need to change anything in this step, click on  
+5.	Add Storage: No need to change anything in this step, click on  
+6.	Add Tags: Click on  
+o	Key    : Name
+o	Value    : MyEC2Server
+o	Click on  
+7.	Configure Security Group:
+o	To add SSH,
+	Choose Type:  
+	Source:   (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	For HTTP,
+	Click on  
+	Choose Type: HTTP 
+	Source:   (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	For HTTPS, 
+	Click on  
+	Choose Type: HTTPS 
+	Source:  (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	After that click on  
+8.	Review and Launch : Review all settings and click on  .
+9.	Key Pair : Create a new key Pair and click on   after that click on  .
+10.	Launch Status: Your instance is now launching, Click on the instance ID and wait for complete initialization of instance till status change to  
+ 
+12.	Note down the sample IPv4 Public IP Address of the EC2 instance. A sample is shown in the screenshot below.
+ 
+Task 3: SSH into EC2 Instance
+•	Please follow the steps in SSH into EC2 Instance.
+Task 4: Install an Apache Server
+1.	Switch to root user
+o	 sudo -s
+2.	Now run the updates using the following command: 
+o	yum -y update
+3.	Once completed, lets install and run an apache server
+o	Install the Apache web server: 
+	yum install httpd
+o	When prompted, press "Y" to confirm.
+o	Start the web server 
+	systemctl start httpd
+o	Now enable httpd: 
+	systemctl enable httpd
+o	Check the web server status
+	systemctl status httpd
+o	You can see the active status is running.
+o	You can test that your web server is properly installed and started by entering the public IP address of your EC2 instance in the address bar of a web browser. If your web server is running you will see the Apache test page. If you don't see the Apache test page, then verify whether you followed the above steps properly and check your inbound rules for the security group that you created.
+Task 5: Create and publish page
+1.	After installing apache server, navigate to the html folder where we will put our html page to be published. Use command:
+o	cd /var/www/html/
+2.	Create a sample test.html file using nano editor: 
+o	nano test.html
+3.	Enter sample HTML content provided below in the file and save the file with Ctrl+X. Click Y to confirm the save, then press Enter to confirm filename.
+o	<HTML>Hi Whizlabs, I am a public page</HTML>
+4.	Restart the web server by using the following command: 
+o	systemctl restart httpd
+5.	Now enter the file name after the public IP which you got when you created ec2 instance in the browser. You will now be able to see the HTML content.
+o	Sample URL: 52.90.56.138/test.html
+                
+Task 6:  Allocating Elastic IP Address
+1.	To use an Elastic IP address, you need to allocate one to your account and then associate it with your instance or a network interface.
+2.	Navigate to EC2. Under   click on   under   section.
+3.	Click on  
+4.	Click on allocate directly as there are no changes to be made.
+ 
+5.	You can see that the Elastic IP has been allocated successfully as shown below.
+ 
+Task 7: Associating an Elastic IP Address with a Running Instance
+1.	Select the Elastic IP address created and click on Actions. Click on Associate Elastic IP address.
+ 
+2.	Associate Elastic IP address
+o	Resource Type: Click on instance 
+o	Choose your instance in the drop down below as shown below. 
+o	Leave default values for the remaining fields and click on Associate.
+ 
+3.	Now you can see that the instance is associated with the Elastic IP address.
+ 
+4.	Go to the EC2 Instance and check the IPv4 Public IP and it should be the same as Elastic IP.  
+ 
+5.	Next we will check the web page by entering the Elastic IP address instead of the previous Public IP.
+o	 Sample URL: 3.208.115.72/test.html
+ 
+Task 8: Validation Test
+1.	Once the lab steps are completed, please click on the   button on the right side panel.
+2.	This will validate the resources in the AWS account and shows you whether you have completed this lab successfully or not.
+3.	Sample output :
+ 
+Completion and Conclusion
+1.	You have successfully created and launched an EC2 Instance.
+2.	You have logged into the EC2 instance by SSH,  installed the Apache server, and published a page.
+3.	You have allocated an Elastic IP address and associated it with the running instance.
+4.	You have checked the web page with Elastic IP address to make sure it works correctly.
+
+
+
+
+Create EC2 Instance and Connect to a windows machine using RDC
+Lab Details:
+1.	This lab walks you through the steps to launch and configure a virtual machine in the Amazon cloud.
+2.	You will practice using Amazon Machine Images to launch Windows EC2 Instance and connect it using Remote Desktop Connection(RDC)
+3.	Duration: 45 minutes
+4.	AWS Region: US East (N. Virginia) us-east-1
+Introduction
+What is EC2?
+•	AWS defines it as Elastic Compute Cloud.
+•	It’s a virtual environment where “you rent” to have your environment created, without purchasing.
+•	Amazon refers to these virtual machines as Instances.
+•	Preconfigured templates can be used to launch instances. These templates are referred to as images. Amazon provides these images in the form of AMIs (Amazon Machine Images).
+•	Allows you to install custom applications and services.
+•	Scaling of infrastructure i.e., up or down is easy based on the demand you face.
+•	AWS provides multiple configurations of CPU, memory, storage etc., through which you can pick the flavor that's required for your environment.
+•	No limitation on storage. You can pick the storage based on the type of the instance that you are working on.
+•	Temporary storage volumes are provided, which are called Instance Store Volumes.  Data stored in this gets deleted once the instance is terminated.
+•	Persistent storage volumes are available and are referred to as EBS (Elastic Block Store) volumes.
+•	These instances can be placed at multiple locations which are referred to as Regions and Availability Zones (AZ).
+•	You can have your Instances distributed across multiple AZs i.e., within a single Region, so that if an instance fails, AWS automatically remaps the address to another AZ.
+•	Instances deployed in one AZ can be migrated to another AZ.
+•	To manage instances, images, and other EC2 resources, you can optionally assign your own metadata to each resource in the form of tags.
+•	A Tag is a label that you assign to an AWS resource.  It contains a key and an optional value, both of which are defined by you.
+•	Each AWS account comes with a set of default limits on the resources on a per-Region basis.
+•	For any increase in the limit you need to contact AWS.
+•	To work with the created instances, we use Key Pairs.
+Tasks:
+1.	Log into AWS Management Console.
+2.	Create an Amazon Windows Instance from Microsoft Windows Server
+3.	Find your instance in the AWS Management Console.
+4.	Connect your EC2 Instance using Remote Desktop Connection.
+Architecture Diagram
+ 
+Lab Steps
+Task 1: Launching Lab Environment
+1.	Launch lab environment by clicking on  . This will create an AWS environment with the resources required for this lab.
+2.	Once your lab environment is created successfully,   will be active. Click on  , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on   again.
+3.	If you have logged into other aws accounts in the same browser, after clicking on the  , you will be redirected to a page asking you to logout from the other aws account. 
+  
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Launching an EC2 Instance
+1.	Make sure you are in the US East (N. Virginia) us-east-1 Region.
+2.	Navigate to EC2 by clicking on the   menu in the top, then click on   in the   section.
+3.	Switch off the New EC2 experience. Edit the feedback message and select yes for the experience. Click on  . This will allow us to use the old console.
+ 
+ 
+4.	Click on  
+5.	Choose an Amazon Machine Image (AMI):  
+6.	Choose an Instance Type: Select   and then click on  
+7.	Configure Instance Details: No need to change anything in this step. Click on  
+8.	Add Storage: No need to change anything in this step. Click on  
+9.	Add Tags: Click on  
+o	Key    : Enter Name
+o	Value    : Enter MyEC2Server
+o	Click on  
+10.	Configure Security Group:
+o	To add RDP:
+	Choose Type:  
+	Source:   (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	For HTTP:
+	Click on  
+	Choose Type: HTTP 
+	Source:   (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	For HTTPS: 
+	Click on  
+	Choose Type: HTTPS 
+	Source:  (Allow specific IP address) or   (From ALL IP addresses accessible).
+o	After that, click on  
+11.	Review and Launch : Review all settings and click on  .
+12.	Key Pair : Create a new key Pair and click on   and then click on  .
+13.	Launch Status: Your instance is now launching. Click on the instance ID and wait for the instance to initialize and the state status to update to  .
+ 
+12.	Note the sample IPv4 Public IP Address of the EC2 instance. A sample is shown in the screenshot below.
+ 
+ 
+Task 3: Connecting EC2 Instance with Remote Desktop Connection
+1.	Select your EC2 Instance, click on Connect, and click on RDP Client.
+2.	Click on Download remote desktop file.
+3.	A dialog box will appear as shown:
+ 
+3.	Click on Get password to get the password, which will help you log in while launching the instance.
+4.	The Key Pair associated with your Instance will be shown.
+ 
+5.	In order to get the password, you have to decrypt the key pair. Choose the downloaded Key Pair file option in Key Pair Path and click on Decrypt Password.
+ 
+6.	Username and Password will be shown on the Dialog Box. Make sure you record these somewhere for later use.
+
+ 
+7.	Go to your download file and click to open.
+ 
+8.	Paste the copied password here, and Click on OK to start the instance.
+ 
+11.	Due to the nature of self-signed certificates, you may get a warning that the security certificate could not be authenticated, if so choose Yes or Continue to continue if you trust the certificate.
+ 
+12.	You will be connected to the Windows Server. On the Top-right corner, you can find the Public IP, Private IP, RAM, etc.
+13.	To disconnect, click on Close on the Top. 
+Task 4: Validation Test
+1.	Once the lab steps are completed, please click on the   button on the right side panel.
+2.	This will validate the resources in the AWS account and shows you whether you have completed this lab successfully or not.
+3.	Sample output :
+ 
+Completion and Conclusion
+1.	You have successfully created and launched a Windows EC2 Instance.
+2.	You have successfully Connected to the Windows Server Using Remote Desktop Connection.
+
+
+
+Introduction to Amazon Simple Storage Service (S3)
+Lab Details
+1.	This lab walks you through Amazon Simple Storage Service. Amazon S3 has a simple web interface that you can use to store and retrieve any amount of data(at any time) from anywhere on the web. In this lab we will demonstrate AWS S3 by creating a sample S3 bucket, uploading an object to the S3 bucket and setting up the bucket permission and policy.
+2.	Duration: 30 minutes
+3.	AWS Region: US East (N. Virginia) us-east-1
+Introduction
+What is S3?
+•	S3 stands for Simple Storage Service.
+•	It provides object storage through a web service interface.
+•	Each object is stored as a file with its metadata included and is given an ID number.
+•	Objects uploaded to S3 are stored in containers called “Buckets”, whose names are globally unique. They organize the Amazon S3 namespace at the highest level.
+•	These buckets are region specific.
+•	You can assign permissions to these buckets to provide or restrict data transactions.
+•	Applications use this ID number to access an object.
+•	Developers can access an object via a REST API.
+•	S3 supports upload of objects.
+•	It uses the same scalable storage infrastructure that Amazon.com uses to run its global e-commerce network.
+•	It's designed for storing online backup and archiving of data and applications on AWS.
+•	Storage classes provided are:
+1.	Standard
+2.	Standard_IA i.e., Standard Infrequent Access
+3.	Intelligent_Tiering
+4.	OneZone_IA
+5.	Glacier
+6.	Deep_Archive
+7.	RRS i.e., Reduced Redundancy Storage (Not recommended by AWS)
+•	Data access is provided through the S3 Console.
+•	Data stored can be either Public or Private based on user requirement.
+•	Data stored can be encrypted.
+•	We can define life-cycle policies which can help in automation of data transfer, retention and deletion.
+•	Amazon Athena can be used to "query" S3 data.
+Tasks
+1.	Log into the AWS Management Console.
+2.	Create an S3 bucket.
+3.	Upload an object to S3 Bucket.
+4.	Access the object on the browser.
+5.	Change S3 object permissions.
+6.	Setup the bucket policy and permission and test the object accessibility.
+Architetcure Diagram
+ 
+Lab Steps
+Task 1: Launching Lab Environment
+1.	Launch lab environment by clicking on  . This will create an AWS environment with the resources required for this lab.
+2.	Once your lab environment is created successfully,   will be active. Click on  , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on   again.
+3.	If you have logged into other aws accounts in the same browser, after clicking on the  , you will be redirected to a page asking you to logout from the other aws account. 
+  
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Create S3 Bucket
+1.	Make sure you are in the US East (N. Virginia) us-east-1 Region.
+2.	Navigate to the   menu at the top. Click on   in the   section.
+3.	On the S3 Page, click on  and fill in the bucket details.
+o	Bucket name :Enter mys3bucketwhizlabs-test
+	Note: S3 bucket name is globally unique, choose a name which is available.
+o	Region: Select US East (N. Virginia)
+o	Uncheck the option, Block all public access, and check the acknowledge option.
+ 
+o	Leave other settings as default.
+o	Click on    button.
+ 
+4.	The S3 bucket is created.
+ 
+Task 3: Upload a file to an S3 bucket
+1.	Click on your bucket name.
+2.	In the Overview, You can see the following message
+o	You don't have any objects in this bucket.
+ 
+3.	You can upload any image from your local machine or you can download our test image from Download Me.
+4.	To upload a file to our S3 bucket,
+o	Click on   button.
+o	Click on  
+o	Browse for your local image or the image we provided and select it.
+o	Click on the   button.
+o	You can watch the progress of the upload from within the transfer panel at the top of the screen.
+o	Once your file has been uploaded, it will be displayed in the bucket.
+ 
+5.	Now click on the   button on the top right corner of the screen.
+Task 4: Change Bucket Permission
+Change the permission of the bucket to make the image available publically.
+1.	Under Objects, Click on smiley.jpg, You will see image details like owner, size, link, etc.
+2.	A URL will be listed under Object URL
+ 
+3.	Open image Link in a new tab.
+o	You will see an AccessDenied message, which means the object is not publicly accessible.
+ 
+4.	Go to your smiley.jpg object and navigate to the Permissions tab.
+ 
+5.	Now click on the   button on the Right side.
+6.	Everyone (public access) :  check the Read checkbox of Objects.
+ 
+8.	Now scroll a little bit below and check I understand the effects of these changes on this object. Checkbox.
+ 
+9.	Now Scroll to the bottom and click on   button,
+10.	Now again Open image Object URL in a new tab and you will see the Smiley image in your browser..
+ 
+Task 5: Create a Bucket Policy (Optional)
+1.	In the previous step, you granted read access only to a specific object. If you wish to make all objects inside a bucket available publicly, you can achieve this by creating a Bucket policy.
+2.	Go to the bucket by clicking on your bucket name - mys3bucketwhizlabs on the top.
+ 
+3.	Click the   tab, then configure the following
+o	Scroll down to   , click on   button on the Right side.
+o	A blank Bucket policy editor is displayed.
+o	Copy the ARN of your bucket to the clipboard.
+	arn:aws:s3:::mys3bucketwhizlabs-test
+ 
+4.	Replace your bucket ARN with the ARN listed in the JSON below, then copy the entire policy.         
+{
+   "Id": "Policy1",
+   "Version": "2012-10-17",
+   "Statement": [
+      {
+         "Sid": "Stmt1",
+         "Action": [
+            "s3:GetObject"
+         ],
+         "Effect": "Allow",
+         "Resource": "replace-this-string-from-your-bucket-arn/*",
+         "Principal": "*"
+      }
+   ]
+}
+•	Paste the bucket policy into the Bucket policy editor.
+ 
+•	Click on   button.
+Task 6: Test Public Access
+1.	Upload another image or download the whizlabs logo image from Download Me
+o	Click on   button.
+o	Click on  
+o	Browse for your local image or the image we provided and select it.
+o	Click on the   button.
+2.	Once the image is uploaded successfully, click on the object name (Image name) , copy the image URL and open it in a browser.
+o	https://whizlabsresources.s3.amazonaws.com/whizlabs-logo.png
+ 
+3.	You can see your image loaded successfully and is publicly accessible.
+Task 7: Validation Test
+1.	Once the lab steps are completed, please click on the   button on the right side panel.
+2.	This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+3.	Sample output : 
+ 
+Completion and Conclusion
+1.	You have successfully created a new AWS S3 Bucket.
+2.	You have successfully uploaded an image to the S3 bucket.
+3.	You have learned to change S3 object permissions.
+4.	You have learned how to create an S3 bucket policy.
+
+
+
+Creating AMI From EC2 Instance
+Lab Details
+This lab walks you through the steps to create an AMI from an Amazon EC2 instance. You will practice using Amazon Machine Images to launch Amazon EC2 instances and will create an AMI of your EC2 Instance.
+
+Duration: 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+What is AMI?
+AMI stands for Amazon Machine Image.
+
+It's a master image for the creation of virtual servers i.e., EC2 instances in the AWS environment.
+
+They are like templates that are configured with an operating system and other software, which determine the user's operating environment.
+
+AMIs are categorized according to region, operating system, system architecture (32 or 64 bit), launch permissions and whether they are backed by Amazon EBS or by the Instance Store.
+
+AMI includes a template for the root volume required for an instance; typical example might contain an operating system, an application server and applications.
+
+When you launch an instance, the root device volume contains the image used to boot the instance.
+
+In the initial stages, all AMIs were backed by the Amazon EC2 Instance Store. This means the root device for an instance launched from the AMI is an Instance Store volume created from a template stored in Amazon S3.
+
+Any data on the instance store volumes persists as-long-as the instance is running i.e., the data gets deleted once the instance is terminated.
+
+Instance store backed instances do not support the Stop action.
+
+If using an instance store is required, Amazon recommends distributing the data across multiple Availability Zones.
+
+After the introduction of Amazon EBS, Amazon introduced AMIs that are backed by Amazon EBS i.e., the root device for an instance launched from the AMI is an Amazon EBS volume created from an EBS Snapshot.
+
+Amazon recommends using EBS backed AMIs, because they launch faster and use persistent storage.
+
+Amazon EBS backed instances can be stopped and later restarted without affecting data stored in the attached volumes.
+
+Permissions are controlled to constrain AMIs for instance launches to the appropriate AWS accounts.
+
+A block device mapping ensures that the correct volumes are attached to the launched instance.
+
+Users have the facility of selecting AMI provided by AWS, the user community, or through the AWS Marketplace.
+
+Users can also create their own AMIs and share them within the same region or across regions.
+
+Tasks
+Log into the AWS Management Console.
+
+Create an EC2 Instance.
+
+Create a new AMI using the EC2 Instance.
+
+Checking the new EC2 Instance created with AMI.
+
+Architecture Diagram
+
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Launching EC2 Instance
+Make sure you are in the US East (N. Virginia) us-east-1 Region. 
+
+Navigate to  menu at the top, then click on  in the  section.
+
+Switch off the New EC2 experience.. Edit the feedback message and select yes for the experience. Click on . This will allow us to use the old console.
+
+
+
+ 
+
+Navigate to  on the left panel. Click on Instances and click  
+
+Choose an Amazon Machine Image (AMI) : Search for Amazon Linux 2 AMI in the search box and click on the select button.
+
+
+Choose an Instance Type : Select  and click on 
+
+Configure Instance Details:
+
+Number of instances: 1
+
+Auto-assign Public IP: Select Enable
+
+Click on .
+
+Under the User data section, enter the following script (which creates an HTML page served by an Apache httpd web server).
+
+#!/bin/bash
+
+sudo su
+
+yum update -y
+
+yum install httpd -y
+
+systemctl start httpd
+
+systemctl enable httpd
+
+echo "<html><h1> Welcome to Whizlabs </h1><html>" >> /var/www/html/index.html
+
+Click on 
+Add Storage: No changes needed, click on 
+Add Tags : For identification of your instances, you can add a tag with key pair combination
+Key    : Name
+
+Value: MyEC2Server
+
+Click on .
+
+Configure Security Group : Select Create a new security group,
+Security group name: MyEC2SecurityGroup
+Description : My EC2 Security Group
+
+To add SSH:
+
+Choose Type: 
+
+Source: 
+
+For HTTP:
+
+Click on 
+
+Choose Type: HTTP 
+
+Source: 
+
+For HTTPS: click should be indented like the previous ones.
+
+Choose Type: HTTPS 
+
+Source:     
+
+Click on .
+
+Review and Launch : Review all your settings and click on .
+Key Pair: Select Proceed without a keypair and Check the checkbox to acknowledge.
+ Click on .
+Launch Status: Your instance is now launching, Navigate to Instances page from the left menu and wait until the status of the EC2 Instance changes to running.
+
+
+Note down the sample IPv4 Public IP Address of the EC2 instance. 
+
+
+
+Enter the IP Address in the Browser.
+
+ 
+
+Task 3: Creating an AMI from the EC2 Instance
+Select the MyEC2Server. Click on .
+
+Under Image, click on Create Image.
+
+
+
+In the pop up window, enter the following details:
+
+Image Name        : MyEC2Image
+
+Image Description    : My EC2 Image
+
+Leave other details as default.
+
+Click on .
+
+Task 4: Check the newly created Image
+Navigate to AMI’s under Images on the left menu.
+
+
+You can see that the image is getting generated and status is pending.
+
+Once the process is completed, the status will change to available.
+
+ 
+
+Now we can use this Image AMI to create brand new instances.
+
+Task 5: Launching an EC2 Instance with the Created AMI and Testing the AMI
+Select the AMI and click on Launch.
+
+
+
+Choose an Instance Type : Select  and click on 
+
+Configure Instance Details: 
+
+Auto-assign Public IP: Select Enable
+
+No need to change anything.
+
+Click on  
+
+Add Storage: No changes needed, click on 
+Add Tags : For identification of your instances, you can add a tag via key pair combination
+Key    : Name
+
+Value: MyEC2Server2
+
+Click on .
+
+Configure Security Group : Click on Select the existing security group, select MyEC2SecurityGroup and click on 
+Review and Launch : Review all your settings and click on .
+Key Pair: Select Proceed without a keypair and Check the checkbox to acknowledge.
+ Click on .
+Navigate to the instances menu and copy the IPv4 Public IP address of the created EC2 instance.
+Enter the IP Address in the Browser.
+                         
+
+You will be able to see the HTML page displaying the message Welcome to Whizlabs. This shows that the data in the new instance is the same as the one in the first instance we created.
+
+Task 6: Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully created an EC2 instance.
+
+You have successfully created an image directly from that EC2 instance. 
+
+
+How to enable versioning Amazon S3
+Lab Details
+This lab walks you through the steps on how to enables versioning on an AWS S3 Bucket. Versioning allows you to keep multiple versions of an object in one bucket.
+
+Duration: 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+What is Versioning?
+Versioning is a means for keeping multiple variants of the same object in the bucket.
+
+Versioning is used to preserve, retrieve, and restore every version of every object stored in an S3 bucket.
+
+Versioning is done at the S3 Bucket level.
+
+Versioning can be enabled from the AWS Console / SDKs / API.
+
+Versioning, once enabled, cannot be completely disabled.
+
+The alternative to disabling versioning is placing the bucket in a "versioning-suspended" state.
+
+A drawback of having multiple versions of an object is you are billed multiple times (since the objects are getting stored in S3 each time).
+
+In order to avoid having multiple versions of the same object, S3 has a feature called Lifecycle  Management. This allows us to decide on what to do when multiple versions of an object are piling up.
+
+One advantage of versioning is, we can provide permissions on versioned objects i.e., we can define which version of an object is public and which one is private.
+
+Task Details
+Log into the AWS Management Console.
+Create an S3 bucket.
+Enable object versioning on the bucket.
+Upload a text file to the S3 Bucket.
+Test object versioning by changing the text file and re-uploading it.
+Architecture Diagram
+      
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Create an S3 Bucket
+Make sure you are in the US East (N. Virginia) us-east-1 Region.
+
+Navigate to the  menu at the top and click on in the  section.
+
+On the S3 dashboard, click on   and fill in the bucket details.
+
+Bucket name        : Enter whizlabs2346
+
+Note: S3 bucket names are globally unique, choose a name which is available.
+
+Region                  : Select US East (N. Virginia)
+
+Uncheck the option, Block all public access, and check the acknowledge option.
+
+
+Leave other settings as default.
+
+Click on   button.
+
+Your S3 Bucket is now created.
+
+
+
+Task 3: Enable Versioning on the S3 bucket
+Click on your bucket name whizlabs2346
+
+Click on  tab.
+
+Under , click on  button.
+
+Bucket Versioning : select  radio button
+
+Now Click on the  button.
+
+Now Bucket versioning is enabled.
+
+
+
+Task 4: Upload an object 
+Click on the  tab.
+
+In the Overview, You can see the following message 
+
+This bucket is empty. Upload new objects to get started.
+
+
+
+ 
+
+Upload any file from your local machine or download the image from our Download Me link.
+
+To upload a file to our S3 bucket,
+Click on the  button.
+
+Click on the  button.
+
+Browse for the file you want to upload.
+
+Click on the  button.
+
+You can watch the progress of the upload from within the transfer panel at the bottom of the screen. If it's a small file, you might not see the transfer. Once your file has been uploaded, it will be displayed in the bucket.
+
+
+
+Now click on the  button on the top right corner of the screen.
+
+Make the bucket public with a Bucket Policy 
+
+Click the  tab to configure your bucket:
+
+Scroll down to  , click on  button on the Right side.A blank Bucket policy editor is displayed.
+
+Before creating the policy, you will need to copy the ARN (Amazon Resource Name) of your bucket.
+
+Copy the ARN of your bucket to the clipboard. It is displayed at the top of the policy editor. its look like : ARN: arn:aws:s3:::your-bucket-name
+
+
+
+In the policy below, update your bucket ARN in the Resource key value and copy the policy code. 
+{
+
+   "Id":"Policy1",
+
+   "Version":"2012-10-17",
+
+   "Statement":[
+
+      {
+
+         "Sid":"Stmt1",
+
+         "Action":[
+
+            "s3:GetObject"
+
+         ],
+
+         "Effect":"Allow",
+
+         "Resource":"replace-this-string-from-your-bucket-arn/*",
+
+         "Principal":"*"
+
+      }
+
+   ]
+
+}               
+
+Paste the bucket policy into the Bucket policy editor.
+
+
+Click on  button
+Click on the object name (filename), copy the  and open it in a browser and you should see the text in file.
+
+
+
+Task 5: Upload a second version of the file
+Now open the sample.txt file in your local text editor and update the file content as “This is version 2”.
+Click on the  button.
+Click on the  button.
+Browse for the file you want to upload.
+Click on the  button.
+Now click on the  button on the top right corner of the screen.
+Once the file has uploaded successfully, copy the file link and paste it into your browser.
+You should see the latest version of the file you uploaded.
+
+
+Task 6: View the versions of the file
+Goto your S3 bucket whizlabs2346 and  click on the file name sample.txt.
+
+On the top section navigate to  tab.
+
+
+
+Click on the version below the current version.
+
+
+
+Click on the  and select .
+
+Click on the  button and click  on the Top Right corner.
+
+Now open the  in the new tab of your browser and you will be able to see the old version.
+
+
+
+Task 7: Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+This will validate the resources in the AWS account and shows you whether you have completed this lab successfully or not.
+Sample output :
+
+
+Completion and Conclusion
+You have successfully created an S3 Bucket.
+
+You have successfully enabled Object Versioning on the Bucket.
+
+You have successfully uploaded a test file into the Bucket and tested its versioning
+
+
+Creating an S3 Lifecycle Policy
+Lab Details
+This Lab walks you through the steps on how to create a Lifecycle Rule for an object in an S3 Bucket. 
+
+Duration: 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Tasks
+Log into the AWS Management Console.
+
+Create S3 Bucket and upload and object into the bucket.
+
+Create a Lifecycle Rule on the object.
+
+Create Transition types.
+
+Create Transition Expiration.
+
+Test the Lifecycle Rule on the uploaded object.
+
+Architecture Diagram
+    
+
+Lab Steps
+Task 1 : Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2 : Create an S3 Bucket
+Navigate to the  menu at the top and click on  in the  section.
+
+On the S3 dashboard, click on  and fill the bucket detail.
+
+Bucket name: Enter whiztest11
+                   Note: S3 bucket names are globally unique, choose a name that is available.
+
+Region: Select US East (N. Virginia) us-east-1
+Leave other settings as default.
+
+Click on the .
+
+Ignore any type of warnings.
+
+           
+
+Task 3 :  Upload an Object 
+Click on the bucket name and click .
+
+Download our sample text file from Download Me or upload any file from your machine.
+
+Click on the  button.
+
+Browse for our sample.txt. file or the file you've chosen instead.
+
+Click on the  button.
+
+You can watch the progress of the upload from within the transfer panel at the bottom of the screen. Since this is a very small file, you might not see the transfer. Once your file has been uploaded, it will be displayed in the bucket.
+
+Click on the button on the Top Right corner of the page.
+
+Task 4:  Creating a Lifecycle Rule
+Click on the  tab.
+
+Under , click on  to create a lifecycle rule for the uploaded object.
+
+Lifecycle rule name : Enter whiztest
+
+Choose a rule scope : Leave as default
+
+Filter type :
+
+Prefix : Enter whiz
+
+ Under  : Select the following checkboxes.
+
+    
+
+Under 
+
+Storage class transitions : Select 
+
+Days after object creation : Enter 35
+
+Click on  button.
+
+Storage class transitions : Select 
+
+Days after object creation : Enter 90
+
+
+
+Click on the checkbox saying I acknowledge that this lifecycle rule will increase the one-time lifecycle request cost if it transitions small objects.
+
+    
+
+Note: 
+
+Initially when the object is uploaded, it will be in the standard storage class.     
+
+When we create a LifeCycle Policy, the object uploaded using the Lifecycle rule will be migrated to One Zone-IA after 35 days. This means the object will be available only in a Single Availability Zone after 35 days.
+
+After 90 days, our object will be migrated to Glacier. This means our object will be in an archived state. You would have to retrieve the object from Glacier before accessing it.
+
+Under 
+
+Number of days after object creation : Enter 120
+
+
+
+Under 
+
+Incomplete multipart uploads : select the checkbox 
+
+Number of days : Enter 7
+
+
+
+Note : This means that objects which are not properly uploaded will be deleted after 7 days.
+
+Now scroll down to Timeline to view the complete timeline of the life cycle.
+
+          
+
+Now click on  button.
+
+Now a Lifecycle Role has been created and is in enabled state.
+
+        
+
+ 
+
+Task 5 : Validation Test
+Once the lab steps are completed, please click on the  button on the right-side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully used the AWS management console to create a Lifecycle Rule for the object in the S3 bucket.
+
+You have configured the details of a Lifecycle Rule.
+
+Setup Cross Region Replication and Versioning in S3
+Lab Details
+This lab walks you through the steps to Enable Cross-Region Replication and versioning in Amazon S3.
+
+You will practice using the S3 Bucket..
+
+Duration: 00:45:00 Hrs.
+
+AWS Region: US East (N. Virginia).
+
+Tasks
+Login to AWS Management Console.
+
+Create a S3 Source Bucket. 
+
+Enable Versioning for source bucket.
+
+Enable Cross Region Replication and add rule for source bucket.
+
+Create a S3 Target Bucket.
+
+Enable Versioning for target bucket.
+
+Architecture Diagram
+
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Creating a Source Bucket
+Make sure you are in the US East (N.Virginia) us-east-1 Region.
+
+Navigate to the  menu at the top. Click on  in the  section.
+
+In the S3 dashboard, click on the  button and fill in the bucket details.
+
+In the General Configuration, Bucket name: Enter whizsource1 (Source bucket)
+
+Note: S3 Bucket names are globally unique, choose a name that is available. Maybe you can enter your name and create one.
+
+Region: Select US East (N. Virginia) us-east-1
+
+
+In the option of Bucket settings for Block Public Access, Uncheck the option of Block all public access. And, Acknowledge the same by Checking the below option.
+
+
+
+In the Option of Bucket Versioning, Check the option of Enable.
+
+
+Keep everything default and click on .
+
+Source bucket is created now, Let's create the target bucket.
+
+Task 3: Creating a Target Bucket
+In the S3 dashboard, click on the  button and fill in the bucket details.
+
+In the General Configuration, Bucket name: Enter whiztarget1 (Target bucket)
+
+Note: S3 Bucket names are globally unique, choose a name that is available.
+
+Region: Select US East (Ohio) us-east-2.
+
+
+In the option of Bucket settings for Block Public Access, Uncheck the option of Block all public access. And, Acknowledge the same by Checking the below option.
+
+
+In the Option of Bucket Versioning, Check the option of Enable.
+
+Keep everything default and click on 
+
+Both the Source and Target  Buckets are created successfully.
+
+Task 4: Enable Replication in Source Bucket and add a rule
+Now go to Source Bucket and click on Management. Scroll down and select 
+
+Enter a rule name of your choice and keep the status as Enabled.
+
+
+
+Choose a rule scope : This rule applies to all objects in the bucket
+
+
+
+Under Destination, select choose a bucket in this account and click on Browse S3. 
+
+
+
+Select the target bucket created earlier and click on .
+
+
+
+Under IAM Role, click on Create new role.
+
+
+
+Under Encryption, select Replicate objects encrypted with AWS KMS and select the alias aws/s3.
+
+
+
+Under the Destination Storage Class, select Change the storage class for the replicated objects and choose One Zone - 1A.
+
+ 
+
+Leave everything as default. Review once and click on .
+
+
+
+Now navigate to the source bucket and upload an Object(.txt or .png) in the Source bucket by clicking on Add Files. Click on Upload.
+
+ Navigate to your Target Bucket to see the replication. It may take up to 3-5 minutes for replication.
+
+
+
+Now you have successfully configured the Cross-Region Replication in S3 Bucket. Congratulations!
+
+Task 5: Validation Test
+Once the lab steps are completed, please click on the  button on the right-side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully created the S3 Source Bucket.
+
+You have successfully created the S3 Target Bucket.
+
+You have successfully Tested Cross-Region Replication Configuration.
+
+Comparing Data Transfer Speeds with S3 Transfer Acceleration
+Lab Details
+This lab walks you through the steps to create an S3 Bucket to compare the speeds of Direct Upload and Transfer Accelerated Upload of a file.
+
+You will practice using Amazon S3.
+
+Duration: 45 minutes.
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Tasks
+Download a 55MB Video file from this link (vpc_demo) and save it to your local machine.
+
+Create an Amazon S3 Bucket. 
+
+Upload a 55MB file through Direct Upload.
+
+Enable Transfer Acceleration.
+
+Upload a 55MB file after enabling Transfer Acceleration.
+
+Comparing the Upload Speeds.
+
+Architecture Diagram
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Creating S3 Bucket
+Make sure you are in the US East (N.Virginia) us-east-1 Region.
+
+Navigate to the  menu at the top. Click on  in the  section.
+
+In the S3 dashboard, click on the  button and fill in the bucket details.
+
+In the General Configuration, Bucket name: Enter whizlabs123
+
+Note: S3 Bucket names are globally unique, choose a name that is available. Maybe you can enter your name and create one.
+
+Region: Select US East (N. Virginia) us-east-1
+
+
+
+ Leave all other settings as default and click on .
+
+
+
+Task 3: Comparing your data transfer speed with and without Transfer Acceleration
+Let's see a live example of the upload speed by uploading a 55MB image file with and without Transfer Acceleration, starting with our old method.
+
+Task 4: Direct Upload of 55MB file without Transfer Acceleration
+In the bucket, under Objects click on 
+
+    
+
+Now click on Add files to upload the 55MB file that you downloaded. Note the time of upload to see the difference. 
+
+
+
+You'll notice it takes approximately 4-5 minutes to upload the file (Time depends on the speed of the internet).
+
+Once the upload is done, click on Exit on the top right corner
+
+Task 5: Uploading 55MB file with Transfer Acceleration
+Click on your bucket and select Properties.
+
+
+
+Scroll down to see Transfer acceleration and click on it.
+
+Click on the Edit button.
+
+Choose Enable, and then click on Save changes.
+
+Endpoint displays the endpoint domain name that you use to access accelerated data transfers to and from the bucket. If you suspend transfer acceleration, the accelerated endpoint no longer works.
+
+
+
+You will see the Transfer acceleration is now enabled.
+
+
+
+Change the downloaded filename as vpc_demo(1).mp4 in your local disk.
+
+Now go back to the bucket and upload vpc_demo(1).mp4. Note the time of file upload to see the difference.
+
+It should take less time compared to the  direct upload.
+
+
+
+Task 6: Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion 
+You have successfully used the AWS management console to create an Amazon S3 Bucket.
+
+You have uploaded a 55MB file with Direct Upload and noted how long it took to upload.
+
+You have enabled Transfer Acceleration, uploaded a 55MB file and noted how long it took to upload.
+
+You have experienced the data transfer speeds with and without Transfer Acceleration by Live Demo.
+Creating and Subscribing to SNS Topics, Adding SNS event for S3 bucket
+Lab Details
+This lab walks you through the creation and subscription of an Amazon SNS Topic. Using an AWS S3 bucket you will test the subscription.
+
+Duration: 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+What is SNS?
+SNS stands for Simple Notification Service.
+
+Provides a low-cost infrastructure for the mass delivery of messages, predominantly to mobile users.
+
+SNS acts as a single message bus that can message to a variety of devices and platforms.
+
+SNS uses the publish/subscribe model for push delivery of messages.
+
+SNS enables us to decouple microservices, distributed systems, and serverless applications using fully managed pub/sub.
+
+Publishers communicate asynchronously with subscribers by producing and sending a message to a topic, which is a logical access point and communication channel.
+
+Subscribers i.e., web servers, email addresses, SQS queues etc., consume or receive the message or notification over one of the supported protocols when they are subscribed to the topic.
+
+Recipients subscribe to one or more "topics" within SNS.
+
+Using SNS topics, the publisher systems can fan out messages to a large number of subscriber endpoints for parallel processing, including Amazon SQS queues, AWS Lambda functions, and HTTP/S webhooks.
+
+SNS is reliable in delivering messages with durability.
+
+SNS can help in automatically scale the workload.
+
+Using topic policies, you can keep messages private and secure.
+
+Task Details
+Log into the AWS Management Console.
+
+Create an SNS Topic
+
+Subscribe to an SNS Topic
+
+Create an S3 bucket
+
+Update an SNS Topic Access Policy
+
+Create an S3 Event
+
+Testing the SNS Notification
+Architecture Diagram
+
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Create SNS Topic
+Make sure you are in the US East (N. Virginia) us-east-1 Region.
+
+Navigate to SNS by clicking on the  menu available under the  section.
+
+Click on Topics in left panel. Click .
+
+Select the Type as Standard. 
+
+Under Details:
+
+Name : Enter mysnsnotification
+
+Display name : Enter mysnsnotification
+
+
+
+Leave other options as default and click on .
+
+An SNS topic is now created.
+
+
+
+Copy the ARN and save it for later.
+Task 3: Subscribe to SNS Topic
+Once the SNS topic is created, click on the SNS topic mysnsnotification.
+
+Click on .
+
+Under Details: 
+
+Protocol : Select Email
+
+Endpoint : Enter your <Mail Id>
+
+Note: Make sure you give a valid email address as you will receive an SNS notification to this email address.
+
+Check your Spam box if you don't see the email in your Inbox.
+
+You will receive an email confirming your subscription to your email.
+
+
+
+Click on Confirm subscription.
+
+
+
+Your email address is now subscribed to the SNS Topic mysnsnotification.
+
+Task 4: Create S3 an Bucket
+Navigate to AWS S3 by clicking on Services at the top left corner. S3 is available under Storage.
+
+Click on the  button.
+
+Under Name and region:
+
+Bucket name: Enter a unique version of the bucket name mys3buckettestingsns-whizlabs
+(Note: The Bucket Name must be unique across all existing bucket names in Amazon S3)
+
+Region: Select US East (N. Virginia) us-east-1
+
+
+Click on the  button.
+
+Copy the ARN of your S3 bucket and save it.
+
+Task 5: Update SNS Topic Access Policy
+Navigate back to the SNS page.
+
+Click on Topics.
+
+Click on mysnsnotification.
+
+Click on  at the top right corner to edit the Access Policy of the SNS topic.
+
+Expand Access Policy. 
+
+Update the bucket policy as shown below:
+Note: Here we need to update two things after pasting the below policy.
+A: SNS Topic ARN in the Resources section below
+B: S3 bucket ARN in the Condition section below
+
+{
+  "Version": "2008-10-17",
+  "Id": "__default_policy_ID",
+  "Statement": [
+    {
+      "Sid": "__default_statement_ID",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": [
+        "SNS:GetTopicAttributes",
+        "SNS:SetTopicAttributes",
+        "SNS:AddPermission",
+        "SNS:RemovePermission",
+        "SNS:DeleteTopic",
+        "SNS:Subscribe",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive"
+      ],
+      "Resource": "arn:aws:sns:us-east-1:757712384777:mysnsnotification",
+      "Condition": {
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:s3:*:*:mys3buckettestingsns"
+        }
+      }
+    }
+  ]
+}
+Click on .
+
+Now your SNS topic has access to send notification events based on S3 bucket events.
+
+Task 6: Create S3 Event
+Navigate back to the S3 page.
+
+Click on mys3buckettestingsns-whizlabs bucket.
+
+Go to the Properties tab.
+
+Scroll below, and we'll see Event notifications (0), Click on the  button.
+
+Fill in the details: 
+
+Name  : Enter name for notification myemaileventforput.
+
+Prefix - optional: Leave it blank
+
+Suffix - optional: Leave it blank 
+
+Events : Select Put present under All object create events
+
+
+Destination: Select SNS Topic
+
+Specify SNS topic: Select choose from your SNS topics
+
+SNS topic: Select mysnsnotification from the dropdown.
+
+Click on the Save changes button.
+
+
+Now the S3 bucket has been enabled event notifications for putting new objects through our SNS topic.
+
+
+
+Task 7: Testing the SNS Notification
+Open your S3 bucket mys3buckettestingsns.
+
+Click on the  button.
+
+Click on the  button and upload an image from your local system.
+
+Once the image is successfully uploaded to the S3 bucket, it will be visible inside your S3 bucket.
+
+Go to your mailbox. You sould have received an email from SNS.
+
+
+
+You have successfully received a SNS notification based on the PUT object event in S3 bucket.
+
+Task 8: Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully used the AWS management console to create an Amazon SNS Topic.
+
+You have successfully subscribed to an SNS topic using your email address.
+
+You have successfully created an S3 bucket event to get SNS notifications sent to your email address
+
+How to Create a static website using Amazon S3
+Lab Details
+This lab walks you through how to create a static HTML website using AWS S3 and also how to make it accessible from the internet.
+
+Duration: 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+What is a Static Website?
+These are the most basic types of websites and are the easiest to create.
+
+A static web page is a web page that is delivered to the user's web browser exactly as stored.
+
+It holds fixed content, where each page is coded in HTML and displays the same information to every visitor.
+
+No web programming or database design is required when working with them.
+
+They are a safe bet when it comes to security, since we do not have any interaction with databases or plugins.
+
+They are reliable, i.e., if any attack happens on the server, a redirection to the nearest safest node happens.
+
+Static websites are very fast, because there is no true backend to fetch information from.
+
+Hosting the website is cheap due to the non-existence of any other components.
+
+Scaling of the website is easy, and can be done by just increasing the bandwidth.
+
+Task Details
+Log into the AWS Management Console.
+Create an S3 bucket and upload a sample HTML page to the bucket.
+Enable static website settings in the S3 bucket.
+Make the bucket public.
+Test the website URL.
+Architecture Diagram
+
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Creating a Bucket
+Navigate to the  menu at the top. Click on  in the  section.
+
+In the S3 dashboard, click on the  button and fill in the bucket details.
+
+In the General Configuration, Bucket name: Enter whizlabs9
+
+Note: S3 Bucket names are globally unique, choose a name that is available. Maybe you can enter your name and create one.
+
+Region: Select US East (N. Virginia) us-east-1
+
+
+In the option of Bucket settings for Block Public Access, Uncheck the option of Block all public access. And, Acknowledge the same by Checking the below option.
+
+
+
+Keep everything default and click on .
+
+Task 3: Enable Static Website Hosting 
+Click your S3 bucket name and navigate to the Properties tab at the top of the screen.
+
+Scroll down to the Static website hosting and click Edit.
+
+In the Static website hosting dialog box
+
+Static website hosting : Select Enable
+
+Hosting type : choose Host a static website
+
+Index document    : Type index.html
+
+Error document    : Type error.html
+
+Click on Save changes..
+
+
+
+Copy the Endpoint to your clipboard and save it somewhere for later use. 
+
+It will look similar to: http://bucketname.s3-website-us-east-1.amazonaws.com
+
+Next, download the two example HTML files below and upload them to your s3 bucket.
+Download index.html
+Download error.html
+
+
+
+Click the Permissions tab to configure your bucket.
+
+In the Permissions tab, Edit the Bucket Policy.
+
+You will be able to see a Blank policy editor.
+
+Before creating the policy, you will need to copy the ARN (Amazon Resource Name) of your bucket.
+
+Copy the ARN of your bucket to the clipboard. It is displayed at the top of the policy editor. it looks like   ARN:“arn:aws:s3:::your-bucket-name".
+
+In the policy below, update the bucket ARN on the Resource key value and copy the policy code.
+
+{ 
+
+   "Id":"Policy1",
+
+   "Version":"2012-10-17",
+
+   "Statement":[ 
+
+      { 
+
+         "Sid":"Stmt1",
+
+         "Action":[ 
+
+            "s3:GetObject"
+
+         ],
+
+         "Effect":"Allow",
+
+         "Resource":"replace-this-string-with-your-bucket-arn/*",
+
+         "Principal":"*"
+
+      }
+
+   ]
+
+}
+
+ 
+
+
+
+Click on Save changes.
+
+
+
+Task 4: Test the website
+Now copy the static website URL (that we saved earlier) and run it in your browser. You will be able to see the index.html file's text. A sample screenshot is attached below:
+
+
+
+Task 5: Test the website's error page
+Copy the static website URL (which we saved earlier) , but this time, add some random characters to the end of the url to break it. When satisfied, hit enter. You will be redirected to the error.html page automatically.
+
+
+
+Task 6: Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+This will validate the resources in the AWS account and shows you whether you have completed this lab successfully or not.
+Sample output :
+
+
+Completion and Conclusion
+You have successfully created and launched an Amazon S3 bucket.    
+
+You have successfully configured the bucket to host a static website.
+
+You have tested your static website to make sure it works correctly.
+
+You have successfully tested the error page to make sure it works correctly
+
+Home   >   AWS   >   Labs - Learning Path - AWS Solutions Architect Associate   >   Generate S3 presign URL using CloudShell
+Generate S3 presign URL using CloudShell
+Lab Details
+This lab walks you through the steps to create an S3 pre-sign URL. Here you will be creating an S3 bucket, uploading objects, and using CloudShell you will create a short-lived URL i.e. pre sign URL.
+
+Duration: 45 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+What is S3?
+S3 stands for Simple Storage Service.
+
+It provides object storage through a web service interface.
+
+Each object is stored as a file with its metadata included and is given an ID number.
+
+Objects uploaded to S3 are stored in containers called “Buckets”, whose names are globally unique. They organize the Amazon S3 namespace at the highest level.
+
+These buckets are region-specific.
+
+You can assign permissions to these buckets to provide or restrict data transactions.
+
+Applications use this ID number to access an object.
+
+Developers can access an object via a REST API.
+
+S3 supports the upload of objects.
+
+It uses the same scalable storage infrastructure that Amazon.com uses to run its global e-commerce network.
+
+It's designed for storing online backup and archiving of data and applications on AWS.
+
+Storage classes provided are:
+
+Standard
+
+Standard_IA i.e., Standard Infrequent Access
+
+Intelligent_Tiering
+
+OneZone_IA
+
+Glacier
+
+Deep_Archive
+
+RRS i.e., Reduced Redundancy Storage (Not recommended by AWS)
+
+Data access is provided through the S3 Console.
+
+Data stored can be either Public or Private based on user requirements.
+
+Data stored can be encrypted.
+
+We can define life-cycle policies which can help in the automation of data transfer, retention, and deletion.
+
+Amazon Athena can be used to "query" S3 data.
+
+Architecture Diagram
+
+
+Tasks
+Log in to the AWS Management Console.
+
+Create an S3 bucket.
+
+Upload a file to an S3 Bucket.
+
+Change an Environment in CloudShell
+
+Run the S3 pre-sign command and test the output
+
+Validation of the Lab
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Create S3 Bucket
+Make sure you are in the US East (N. Virginia) us-east-1 Region.
+
+Navigate to the  menu at the top. Click on  in the  section.
+
+On the S3 Page, click on and fill in the bucket details.
+
+Bucket name :Enter mywhizbucket
+
+
+Note: S3 bucket name is globally unique, choose a name which is available.
+
+Region: Select US East (N. Virginia)
+
+Uncheck the option, Block all public access, and check the acknowledge option.
+
+
+Leave other settings as default.
+
+Click on   button.
+
+
+
+The S3 bucket is created.
+
+Task 3: Upload a file to an S3 bucket
+Click on your bucket name.
+
+In the Overview, You can see the following message
+
+You don't have any objects in this bucket.
+
+
+
+You can upload any image from your local machine or you can download our test image from Download Me.
+
+To upload a file to our S3 bucket,
+
+Click on  button.
+
+Click on 
+
+Browse for your local image or the image we provided and select it.
+
+Click on the  button.
+
+You can watch the progress of the upload from within the transfer panel at the top of the screen.
+
+Once your file has been uploaded, it will be displayed in the bucket.
+
+
+
+Now click on the smiley.jpg to copy the S3 URI.
+Click on the copy icon for S3 URI.
+
+Note: Keep the copied S3 URI in a notepad, you will need this in future steps.
+Task 4: Create an Environment in CloudShell
+Click on  icon (Cloud Shell) on the top right AWS menu bar.
+
+A new tab in your browser opens and if you see a welcome message to cloud shell then click on the  button in that message.
+
+You will see a creating environment message on the screen.
+
+         
+
+Wait for a few minutes to complete the environment creation. Once the environment is created , You are ready to use the terminal.
+
+         
+
+Task 5: Run the S3 pre-sign command and test the output
+Run the below command to make the s3 pre-sign URL.
+
+Syntax: aws s3 presign [S3 URI] --expires-in 60
+
+Example: aws s3 presign s3://mywhizdemobucket/smiley.jpeg --expires-in 60
+
+
+Hit end to see the output, copy the complete URL.
+
+
+And,  paste in the New tab of your browser.
+
+
+Refresh the page after 1 minute, the page is gone, because its only valid for 60 seconds, i.e. 1 minute.
+
+
+Task 6: Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully created a new AWS S3 Bucket.
+
+You have successfully uploaded an image to the S3 bucket.
+
+You have learned to create a CloudShell environment
+
+You have learned how to create an S3 pre sign URL.
+Accessing S3 with AWS IAM Roles
+Lab Details
+This lab walks you through the steps to create an AWS S3 bucket and demonstrates how to access the bucket using AWS CLI commands from EC2 instance and IAM roles.
+
+Duration: 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+IAM Policy
+An IAM (Identity and access management)  policy is an entity in AWS, that enables you to manage access to AWS services and resources in a secure fashion.
+
+Policies are stored on AWS in JSON format and are attached to resources as identity-based policies.
+
+You can attach an IAM policy to different entities such as an IAM group, user, or role.
+
+IAM policies gives us the power of restricting users or groups to only use the specific services that they need.
+
+Policy Types
+There are two important types of policies:
+Identity-Based-Policies
+
+Resource-Based-Policies
+
+Identity-Based-Policy
+Identity-based policies are policies that you can attach to an AWS identity (such as a user, group of users, or role).
+
+These policies control what actions an entity can perform, which resources they can use, and the conditions in which they can use said resources.
+
+Identity-based policies are further classified as:
+
+AWS Managed Policies
+
+Custom Managed Policies
+
+AWS Managed Policies
+AWS Managed policies are those policies that are created and managed by AWS itself.
+
+If you are new to IAM policies, you can start with AWS managed policies before managing your own.
+
+Custom Managed Policies
+Custom managed policies are policies that are created and managed by you in your AWS account. 
+
+Customer managed policies provide us with more precise control than AWS managed policies. 
+
+You can create and edit an IAM policy in the visual editor or by creating the JSON policy document directly.
+
+You can create your own IAM policy using the following link: https://awspolicygen.s3.amazonaws.com/policygen.html
+
+Resource-Based-Policy
+Resource-based policies are policies that we attach to a resource such as an Amazon S3 bucket.
+
+Resource-based policies grant the specified permission to perform specific actions on particular resources and define under what conditions these policies apply to them.
+
+ Resource-based policies are in line with other policies. 
+
+There are currently no AWS-managed resource-based policies.      
+
+There is only one type of resource-based policy called a trust policy, which is attached to an IAM role. 
+
+An IAM role is both an identity and a resource that supports resource-based policies.
+
+IAM Role
+An IAM role is an AWS IAM identity (that we can create in our AWS account) that has specific permissions. 
+
+It is similar to an IAM user, which determines what the identity can and cannot do in AWS. 
+
+Instead of attaching a role to a particular user or group, it can be attached to anyone who needs it.
+
+The advantage of having a role is that we do not have standard long-term credentials such as a password or access keys associated with it. 
+
+When resources assume a particular role, it provides us with temporary security credentials for our role session.
+
+We can use roles to access users, applications, or services that don't have access to our AWS resources.
+
+We can attach one or more policies with roles, depending on our requirements.
+
+For example, we can create a role with s3 full access and attach it to an EC2 instance to access S3 buckets.
+
+Simple storage service(S3)
+Amazon S3 is a simple storage service that we can use to store and retrieve any amount of data, at any time, from anywhere on the web. 
+
+It gives developers and users access to highly scalable, reliable, fast, inexpensive data storage infrastructure.
+
+S3 guarantees 99.9% availability at any point in time.
+
+S3 has been designed to store up to 5 TB of data.
+
+S3 is global, meaning you can create a bucket in any region and access it from anywhere. Due to this, the name of the bucket should be a unique one.
+
+The S3 bucket objects, as well as the bucket, can be deleted at any time by the user.
+
+We can limit access to our bucket by granting different permissions for different users.
+
+S3 also comes with additional features such as versioning, static website hosting, server access logging and life cycle policy for storing objects, eand many others.
+
+Tasks
+Create an IAM role with S3 full access.
+
+Create an EC2 instance and attach the S3 role created in the first step.
+
+Create an S3 bucket and upload some files to the bucket.
+
+Access the bucket using AWS CLI via our EC2 instance.
+
+List the objects in the S3 bucket using the AWS CLI from the EC2 instance.
+
+Architecture Diagram
+
+Lab Steps
+Task 1 : Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2 : Creating IAM Role
+Click on  and select IAM under the  section. 
+
+Select    in the left panel and click on  to create a new IAM role.
+
+In the   section, choose    and then select EC2 service for the role. Click on  as shown below in the screenshot:
+
+
+
+Type S3fullaccess in the search bar and then click  .
+
+Click on .
+
+Key : Name
+
+Value : ec2S3role
+
+Click on .
+
+On the Create Role Page:
+
+ Role Name :  Enter  S3Role
+
+Note : You can create the role in your desired name and then attach it to the EC2 instance.
+
+Role description : Enter IAM Role to access S3
+
+Click on .
+
+You have successfully created the role to access the S3 bucket.
+
+
+Task 3 : Launching EC2 Instance
+Make sure you are in the US East (N. Virginia) us-east-1 Region.
+
+Navigate to EC2 by clicking on the  menu at the top, then click on  in the  section.
+
+Switch off the New EC2 experience. Edit the feedback message and select yes for the experience. Click on . This will allow us to use the old console.
+
+
+
+ 
+
+Under the left sub-menu, click on 'Instances'   and then click on 
+
+Choose an Amazon Machine Image (AMI): Search for Amazon Linux 2 AMI in the search box and click on the select button.
+
+
+
+Choose an Instance Type: Select  and then click on  
+
+Configure Instance Details: 
+
+Scroll down to the IAM role and then select the role that we have created in the above step.
+
+
+
+Leave other fields as default.
+Click on 
+Add Storage: No need to change anything in this step. Click on 
+
+Add Tags: Click on 
+
+Key       : Enter Name        
+
+Value    : Enter S3EC2server
+
+Click on : 
+
+ Configure Security Group: 
+
+Choose Create new security group
+
+Name : S3server-SG
+
+To add SSH
+
+Choose Type  : 
+
+Source : Custom - 0.0.0.0/0
+
+Click on 
+
+Review and Launch: Review all settings and click on .
+
+Key Pair : Select Create a new key pair and click on .
+
+Click on .
+
+Navigate to Instances. Once the Instance State changes from pending to running, the EC2 instance is ready.
+
+You can tell that the instance is running by checking the instance status (example below).
+
+
+
+Public IP: 54.210.19.199
+
+Task 4 : Viewing the S3 Bucket
+Navigate to the  menu at the top. Click on S3 in the Storage section.
+
+You can see a bucket with a name similar to whizlabs7577123847772.
+
+
+
+Task 5 : Accessing the S3 bucket via EC2 Instance
+To SSH into the server, please follow the steps in SSH into EC2 Instance.
+
+Once logged in, switch to the root user: 
+
+sudo  su
+
+Run the below command to find your S3 bucket via CLI.
+
+ aws s3 ls
+
+
+
+You will see output similar to the image above, which shows that we are able to access the S3 bucket with the help of role attached to the EC2 instance.
+
+Create a new text file and upload it to the bucket via AWS CLI (using the following set of commands):
+
+touch test.txt 
+
+aws  s3 mv test.txt s3://whizlabs7577123847772
+
+ Check for the new file in the S3 bucket.
+
+
+
+Repeat step 5 and create some more files like new.txt, smile.txt and upload it to the S3 bucket using below commands:
+
+touch new.txt smile.txt
+aws s3 mv new.txt s3://whizlabs7577123847772
+
+aws s3 mv smile.txt s3://whizlabs7577123847772
+
+You can confirm the files uploaded to S3 bucket by navigating to the bucket in the AWS console.
+
+
+
+You can also list the files uploaded to S3 bucket via CLI from the EC2 instance with the following command:
+
+aws s3 ls s3://whizlabs7577123847772
+
+
+
+Task 6 : Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully created an IAM role to access S3 by granting S3 full access.
+
+You have created an EC2 instance with an IAM role attached.
+
+You have uploaded a file to an S3 bucket via CLI from the EC2 instance.
+
+You have uploaded a file to an S3 bucket from the AWS console.
+
+AWS S3 Multipart Upload using AWS CLI
+Lab Details:
+This Lab walks you through the steps on how to upload a file to an S3 bucket using multipart uploading. 
+
+Duration: 01:00:00 Hrs
+
+AWS Region: US East (N. Virginia).
+
+Tasks:
+Log in to the AWS Management Console.
+
+Create an S3 bucket
+
+Create an EC2 instance
+
+SSH into the EC2 instance
+
+Create a directory
+
+Copy a file from S3 to EC2
+
+Split the file into many parts
+
+Initiate Multipart upload
+
+Upload the individual parts
+
+Combine individual parts to a single file
+
+View the file in the S3 bucket
+
+Architecture Diagram
+
+
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2: Create an IAM Role
+Make sure you are in the N.Virginia Region.
+
+Click on  and select IAM under the  section. 
+
+Select  from the left side panel and click on  to create a new IAM Role.
+
+Under Create Role section: 
+
+Select the type of trusted entity: Choose  AWS Service.
+
+Choose the service that will use this role: Select EC2 and then click on .
+
+
+
+Type S3fullaccess in the search bar and choose AmazonS3FullAccess.
+
+Click on Next:Tags.
+
+Key: Enter Name
+
+Value    : Enter EC2-S3-fullAccess
+
+Click on Next:Review.
+
+On Create Role Page:
+
+ Role Name:  Enter EC2S3Role
+
+Note: You can create a Role with your desired name and attach it to the EC2 instance.
+
+Role description: Enter IAM Role to access S3 from EC2
+
+Click on .
+
+You have successfully created the role to access S3.
+
+
+Task 3: Create an S3 Bucket
+Navigate to the  menu at the top. Click on S3 in the Storage section.
+
+In the S3 dashboard, click on the  button and fill in the bucket details.
+
+In the General Configuration, Bucket name: Enter s3multipart-final-2
+
+Note: S3 Bucket names are globally unique, choose a name that is available. Maybe you can enter your name and create one.
+
+Region: Select US East (N. Virginia) us-east-1
+
+
+
+ Leave all other settings as default and click on .
+
+ 
+
+
+
+ 
+
+The S3 bucket has now been created.
+ 
+
+Task 4: Launch an EC2 Instance
+Make sure you are in the N.Virginia Region. 
+
+Navigate to EC2 by clicking on the  menu at the top, then click on EC2 in the Compute section.
+
+Switch off the New EC2 experience button present on the left top of menu list. Click on Cancel button on the feedback prompt.
+
+
+
+ 
+
+Navigate to  on the left panel and click on 
+
+Search and Choose Amazon Linux 2 AMI: 
+
+
+
+Choose an Instance Type: Select  and then click on 
+
+Configure Instance Details: 
+
+Scroll down to the IAM role and then select the role that we have created in the above step.
+
+
+
+Scroll down to 
+
+Under the user data section, enter the following script to copy a video file from the S3 bucket to the EC2 instance.
+
+#!/bin/bash
+
+sudo su
+
+yum update -y
+
+mkdir /home/ec2-user/whizlabs/
+
+aws s3 cp s3://labtask69/video.mp4 /home/ec2-user/whizlabs/
+
+Click on 
+
+Add Storage: No need to change anything in this step, click on 
+
+Add Tags: Click on 
+
+Key: Enter Name
+
+Value: Enter Multipart_Server
+
+Click on 
+
+Configure Security Group:
+
+Assign a security group: Select 
+
+Security Group Name: Enter Multipart_Server-SG
+
+Description: Enter Multi-part Server SSH Security Group
+
+To add SSH,
+
+Choose Type: 
+
+Source:  (From ALL IP addresses).
+
+After that, click on 
+
+Review and Launch: Review all settings and click on 
+
+Key Pair: This step is the most important part of EC2 creation.
+
+Select Create a new key pair from the dropdown list.
+
+Key pair name: Enter Multipart_Server-key
+
+Click on  after than click on 
+
+Launch Status: Your instance is now launching, Click on the instance ID and wait until the initialization status changes to running.
+
+
+
+In the Description tab, copy the IPv4 Public IP Address of the EC2 instance Multipart_Server
+
+Task 5: SSH into the EC2 Instance
+Please follow the steps in SSH into EC2 Instance.
+
+Task 6: View the Original File in EC2
+Here, we are going to perform the S3 multipart upload of a video file stored in an EC2 instance. We will upload it to the S3 bucket we created in the above step.
+
+Once you SSH into the EC2 instance, use this command to view the newly-created directory whizlabs
+
+sudo -s
+
+ls
+
+
+
+Change directory to whizlabs
+
+cd whizlabs/
+
+
+
+View the property detail of the video file.
+
+ls -l
+
+
+
+Note: This file is 143 MB in size, so we'll use the multipart feature to upload this file to s3.
+
+Task 7: Split the Original File
+Split the file into chunks
+
+The split command will split a large file into many pieces (chunks) based on the option.
+
+split [options] [filename]
+
+Here we are dividing the 143 MB file into 40MB chunks. [ -b option means Bytes ]
+
+split -b 40M video.mp4
+
+View the chunked files
+
+ls -lh
+
+
+
+Info: Here "xaa" and "xad" are the chunked files that have been renamed alphabetically. Each file is 40MB in size but except the last one. The number of chunks depends on the size of your original file and the byte value used to partition the chunks.
+
+Task 8: Create a Multipart Upload
+We are initiating the multipart upload using an AWS CLI command, which will generate a UploadID that will be used later.
+
+Syntax: aws s3api create-multipart-upload --bucket [Bucket name] --key [original file name]
+
+aws s3api create-multipart-upload --bucket s3multipart-final --key video.mp4
+
+Note: Replace the example bucket name above with our bucket name.
+
+
+
+Note: Please copy the UploadId and save it for later use...
+
+Task 9: Uploading the File Chunks
+Next, we need to upload each file chunk one by one, using the part number. The part number is assigned based on the alphabetic order of the file.
+
+Chunk File Name
+
+Part Number
+
+xaa
+
+1
+
+xab
+
+2
+
+xac
+
+3
+
+xad
+
+4
+
+ 
+
+Syntax: aws s3api upload-part --bucket [bucketname] --key [filename] --part-number [number] --body [chunk file name] --upload-id [id]
+
+Example: aws s3api upload-part --bucket s3multipart-final --key video.mp4 --part-number 1 --body xaa --upload-id 97pcMF8E31iT6spF8_AoIDVHESi0kJlj.G8oM1.jbgYWTs1KjazpK.yVt2akv3NoqfvnDc8TO9e6OikpdSEyEJbIDOe.8yOx3q.suF7SlLcwjnIyfjXqVif3CAj.xgLL3jDRdB9PFTEmGr5KUog2SA--
+
+Note: Please replace the upload id with your upload id. 
+
+
+
+Note: Copy the ETag id and Part number for later use.
+
+Repeat the above CLI command for each file chunk [Replace --part-number & --body values with the above table values]
+
+Press the UP Arrow Key to get back to the previous command. No need to enter the Upload ID again, just change the Part Number and Body Value.
+
+Each time you upload a chunk, don’t forget to save the Etag value.
+
+Task 10: Create a Multipart JSON file 
+Create a file with all part numbers with their Etag values.
+Creating a file named list.json
+
+nano list.json
+
+
+
+Copy the below JSON Script and paste it in the list.json file.
+
+Note: Replace the ETag ID according to the part number, which you received after uploading each chunk.
+
+{
+
+  "Parts": [
+
+    {
+
+      "PartNumber": 1,
+
+      "ETag": "\"2771bc3662b381da1259fdf39904045a\""
+
+    },
+
+    {
+
+      "PartNumber": 2,
+
+      "ETag": "\"9fdc79d796e33027565ac06358af966d\""
+
+    },
+
+    {
+
+      "PartNumber": 3,
+
+      "ETag": "\"eb9311b12d3c23b7543f08364bfe079b\""
+
+    },
+
+    {
+
+      "PartNumber": 4,
+
+      "ETag": "\"327c0ca55097aea8cb65c8bc8eee8b4f\""
+
+    }
+
+  ]
+
+}
+
+
+
+Save the file
+
+Press and hold [ctrl] + X
+
+ Press Y and then press Enter to confirm the filename.
+
+Task 11: Complete the Multipart Upload
+Now we are going to join all the chunks together with the help of the JSON file we created in the above step.
+
+Syntax: aws s3api complete-multipart-upload --multipart-upload [json file link]  --bucket [upload bucket name] --key [original file name] --upload-id [upload id]
+
+Example: aws s3api complete-multipart-upload --multipart-upload file://list.json --bucket s3multipart-final --key video.mp4 --upload-id 97pcMF8E31iT6spF8_AoIDVHESi0kJlj.G8oM1.jbgYWTs1KjazpK.yVt2akv3NoqfvnDc8TO9e6OikpdSEyEJbIDOe.8yOx3q.suF7SlLcwjnIyfjXqVif3CAj.xgLL3jDRdB9PFTEmGr5KUog2SA--
+
+Note: 
+
+Replace the example above with our bucket name.
+
+Replace the Upload-Id value with your upload id.
+Task 12: View the File in the S3 Bucket
+Make sure you are in the N.Virginia Region.
+
+Navigate to the  menu at the top. Click on S3 in the Storage section.
+
+On the S3 dashboard, click on the bucket name s3multipart-final
+
+Note: Choose the bucket name you created in the beginning if s3multipart-final was not available.
+
+
+Task 13: Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+?
+
+Completion and Conclusion
+You have successfully created an S3 bucket.
+
+You have successfully created an EC2 instance and copied a file from S3 to EC2.
+
+You have successfully split a file into multiple parts and used the parts to perform a multipart upload via AWS CLI.
+
+Introduction to Amazon CloudFront
+Lab Details
+This lab walks you through to Amazon CloudFront creation and working. In this lab you will create an Amazon CloudFront distribution. It will distribute a publicly accessible image file stored in an Amazon S3 bucket.
+
+Understand Custom Error Pages and Geo-Restriction.
+
+Duration: 1 hour 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+      What is CloudFront?
+Amazon CloudFront is a content delivery network (CDN) offered by AWS.
+
+CDN provides globally-distributed network of proxy servers which cache content, i.e., web videos or other bulky media, more locally to consumers, thus improving access speed for downloading the content.
+
+CloudFront service works on a pay-as-you-go basis.
+
+CloudFront works with origin servers like S3, EC2 where the content is stored and is pushed out to multiple CloudFront servers as content is requested.
+
+When CloudFront is enabled, the content is stored on the main S3 server.
+
+Copies of this content are created on a network of servers around the world called CDN.
+
+Each server within this network is called an Edge server, which will only have a copy of your content.
+
+When a request is made to the content, the user is provided from the nearest edge server.
+
+CloudFront has features similar to dynamic site acceleration, a method used to improve online content delivery.
+
+CloudFront accelerates the delivery of dynamic content by moving it closer to the user to minimize internet hops involved in retrieving the content.
+
+CloudFront's Web distribution support "Progressive" download i.e., data from S3 is cached and then streamed without disruptions.
+
+Due to that, the user cannot move front or back in the video i.e., the video is processed bit by bit.
+
+CloudFront's Web distribution support "Streaming" allows users to directly watch without any download.
+
+Due to that, the user can move front or back in the video, the latency is based on the size of the file and the customer Internet bandwidth.
+
+This service is beneficial for those developing a website that distributes a lot of content and needs to scale-up.
+
+It helps reduce costs and improve the performance of a website by providing high data transfer speeds and low latency.
+
+Task Details
+Log into AWS Management Console.
+
+Create a S3 Bucket and upload an image to the sample S3 bucket provided.
+
+Create Custom Error pages.
+
+Make the image Publicly accessible.
+
+Create a new Amazon CloudFront distribution.
+
+Link the CloudFront distribution to serve the image in S3 bucket.
+
+Test the distribution.
+
+Update Distribution with Custom Error Pages and test.
+
+Create a Geo-Restriction.
+
+Test Geo-Restriction.
+
+Architecture Diagram
+
+
+ 
+Lab Steps
+Task 1: Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2 : Create S3 Bucket
+Make sure you are in the US East (N. Virginia) us-east-1 Region.
+
+Navigate to the  menu at the top. Click on  in the  section.
+
+In the S3 dashboard, click on the   button and fill in the bucket details.
+Bucket name        : Enter whizlabs234
+
+Note: S3 Bucket names are globally unique, choose a name which is available.
+
+Region                  : Select US East (N. Virginia)
+
+Scroll down to Block Public Access settings for bucket and Uncheck the Block all Public Access and acknowledge the change.
+
+No need to change anything further, just click on the next and .
+
+
+
+
+
+Task 3 : Upload a file to an S3 bucket
+Enter the S3 bucket by clicking on your bucket name.
+
+You will see this message: 
+
+This bucket is empty. Upload new objects to get started.
+
+
+
+You can upload any image from your local machine or you can download our test image from Download Me.
+
+To upload a file to our S3 bucket,
+
+Click on .
+
+Click on Add files.
+
+Browse for your local image or the image we provided and select it.
+
+Click on the  button.
+
+You can watch the progress of the upload from within the transfer panel at the bottom of the screen.
+
+Once your file has been uploaded, click on Exit and you can see an object in the bucket.
+
+
+
+Task 4 : Creating Custom Error Pages
+We can create custom error pages for CloudFront to return when origin returns HTTP 4xx or 5xx errors. For this, we have to save the error pages in a location that is accessible to CloudFront.
+
+We will be using the same S3 bucket to create the error pages.
+
+To configure a custom error page, select your S3 bucket
+
+Click on  and create a folder by the name CustomErrors.
+
+
+
+Click on the new CustomErrors folder.
+
+Creating error.html
+Create an error.html file in your local using Notepad.
+
+This custom HTML page will be used for showing errors in CloudFront.
+
+Sample error.html content:
+
+<html><h1>This is Error Page</h1></html>
+
+Upload error.html to S3 bucket.
+
+Creating block.html
+
+Create a block.html file in your local using Notepad.
+
+This custom HTML page will be used for showing geo-restrictions of your content in CloudFront.
+
+Sample block.html content:
+
+<html><h1>This content is blocked in your location!!!</h1></html>
+
+Upload block.html to S3 bucket in CustomErrors folder.
+
+Task 5 : Making the objects public
+Click on the image name. You can see the image details like Owner, size, link, etc.
+Open image Link in a new tab.
+A sample Image URL: https://999886072153.s3.amazonaws.com/Whizlabs_logo.jpg
+
+You will see the AccessDenied message, meaning the object is not publicly accessible.
+
+Go back to the Bucket and click the  tab. 
+
+Scroll down to the Bucket Policy and click on Edit. Copy and paste the below policy and save the policy.
+
+Note: Change the name of the bucket with your bucket name in the Resource marked in bold.
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Principal": {
+        "AWS": "*"
+      },
+      "Resource": "arn:aws:s3:::999886072154"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Principal": {
+        "AWS": "*"
+      },
+      "Resource": "arn:aws:s3:::999886072154/*"
+    }
+  ]
+}
+
+Open the Image URL again or refresh the one already open.
+
+If you can see your uploaded image in the browser, it means your image is publicly accessible. If not, check your bucket policy again.
+
+
+Task 6 : Creating CloudFront Distribution
+Select CloudFront from the  menu.
+
+Click on the .
+
+Select  from the delivery method Web. 
+
+Now configure distribution as follows-: 
+
+Origin Domain Name
+
+On click of input space, select your S3 bucket : 999886072153.s3.amazonaws.com
+
+No need to change anything in configuration, scroll down and click on the  .
+
+You can see the  column shows  for your distribution. After Amazon CloudFront has created your distribution, the   for your distribution will change to . At this point, it will be ready to process requests. 
+
+Note: This process will take around 15-20 minutes.    
+
+The domain name that Amazon CloudFront assigns to your distribution appears in the list of distributions. It will look similar to d1hmlwhed8zk6q.cloudfront.net
+
+Task 7 : Accessing Image through CloudFront
+Amazon CloudFront is now pointed to Amazon S3 bucket origin and you know the domain name associated with the distribution. You can create a link to the image in the Amazon S3 bucket with that domain name.
+
+For testing your distribution, copy your domain name and append your image name after the domain name. 
+
+Example: d1hmlwhed8zk6q.cloudfront.net/Whizlabs_logo.jpg
+
+Open the CloudFront URL in a new tab. You can see your uploaded image.
+
+You can see how much faster the CloudFront URL image loads as compared to the S3 URL. When end users request an object using a CloudFront domain name, they are automatically routed to the nearest edge location for high-performance delivery of your content.
+
+
+
+Task 8 : Configuring Custom Error Page
+Navigate back to CloudFront Dashboard and select the distribution created and click on .
+On the settings page, select  tab.
+
+Click on the .
+
+Now we need to set up our custom error page:
+
+Http Error Code            : Select 
+
+Customize Error Response : Yes
+
+Response Page Path             : /CustomErrors/error.html
+
+HTTP Response Code          : Select 404: Not Found
+
+Click on .
+
+
+
+Navigate back to Distributions and wait for your distribution to complete state to change Deploy.
+Note: This process will take around 15 minutes.
+
+Once the state has been changed to Deploy, we will test the error page. 
+
+Enter the URL of an image which does not exist in your S3 bucket with CloudFront domain name
+
+d1hmlwhed8zk6q.cloudfront.net/abc.jpg
+
+
+
+If you can see your HTML error page in the browser, it means you successfully set up your custom error page.
+Task 9 : Restricting the Geographic Distribution of Your Content
+If you need to prevent users in selected countries from accessing your content, you can specify either a whitelist (countries where they can access your content) or a blacklist (countries where they cannot) by using restrictions.
+
+On the distribution settings page, select  and select , then click on .
+
+Enable Geo-Restriction : Select Yes
+
+Restriction Type : Blacklist
+
+Select the country where you are currently and click on  to check this option.
+
+On enabling this option, the request from the specified country which is "Blacklisted", will not be displayed and a default error message is displayed.
+
+Click on .
+
+   
+
+Go to the distribution list and wait for your distribution to complete the state change to .
+
+Once the state has been changed to , we will test the restriction through CloudFront in the browser.
+
+d1hmlwhed8zk6q.cloudfront.net/Whizlabs_logo.jpg
+
+You can see the following error message:
+
+403: Error The Amazon CloudFront distribution is configured to block access from your country.
+
+Let us configure custom error page:
+
+Navigate back to CloudFront Dashboard and select the distribution created and click on .
+
+On the settings page, select  tab.
+
+Click on the .
+
+Now we need to set up our custom error page:
+
+Http Error Code            : Select 
+
+Customize Error Response : Yes
+
+Response Page Path             : /CustomErrors/block.html
+
+HTTP Response Code          : Select 403: Forbidden
+
+Click on .
+
+Navigate back to Distributions and wait for your distribution to complete state to change Deploy.
+
+Note: This process will take around 15 minutes.
+
+Once the state has been changed to Deploy, we will test restriction through CloudFront in the browser.
+
+d1hmlwhed8zk6q.cloudfront.net/Whizlabs_logo.jpg
+
+
+
+If you see the error, this means you successfully configured custom error page and restricted image access from your country.
+Task 10 : Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully created an Amazon CloudFront distribution and published an image through CloudFront.
+
+You learned how to configure Custom Error Pages for CloudFront Distribution.
+
+You learned how to configure restrictions based on Geo-location.
+
+Introduction to AWS Relational Database Service
+Lab Details
+This lab walks you through to the creation and testing of an Amazon Relational Database Service (Amazon RDS) database. We will create an RDS MySql Database and test the connection using MySQL Workbench.
+Duration: 50 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Task Details
+Create RDS Database Instance
+Connecting to RDS Database on a DB Instance using the MySQL Workbench
+Test Connection
+Architecture Diagram
+
+
+Prerequisites
+For testing this lab, it is necessary to download the MySql GUI Tool, To download it, go to the Download MySQL Workbench page. Based on your OS, select the respective option under Generally Available (GA) Releases. Download and Install.
+
+
+
+Lab Steps
+Task 1 : Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2 : Create a Security Group for RDS instance
+Make sure you are in the N.Virginia Region.
+
+Navigate to EC2 by clicking on the  menu available under the section.
+
+On the left panel menu, select the security group under the Network & Security section.
+
+    
+
+Click on the  button.
+
+We are going to create a Security group for RDS with a 3306 port number enabled.
+
+Security group name : Enter RDS_lab_sg
+
+Description: Enter Security group for RDS
+
+VPC: Select Default VPC
+
+
+Click on the  button under Inbound rules.
+
+In the textbox add 0.0.0.0/0
+
+Source: Select Custom
+
+Type: Select MYSQL/Aurora
+
+
+
+Leave everything as default and click on the  button.
+
+
+
+Task 3 : Create RDS Database Instance
+Make sure you are in the US East (N. Virginia) us-east-1 Region. 
+
+Navigate to RDS by clicking on the  menu available under the  section.
+
+Click on  in the Create database section.
+
+Click on Switch to your original interface on top of your screen.
+
+
+
+Select Engine:
+
+Select the checkbox in the bottom of the page to see only those settings available under the Free Tier.
+
+Choose , and click on .
+
+Specify DB Details:
+
+Instance specifications
+
+License model            : general-public-license
+
+DB engine version        : Leave it as default version.
+
+DB instance class        : db.t2.micro — 1 vCPU, 1 GiB RAM
+
+Multi-AZ deployment        : default No.
+
+Storage type            : General Purpose (SSD)
+
+Allocated storage        : 20 (default)
+
+Enable storage autoscaling     : Uncheck
+
+Settings
+
+DB instance identifier    : mydatabaseinstance
+
+Master username.         : mydatabaseuser
+
+Note: This is the username you used to log into the database the very first time.
+
+Master password and Confirm password: mydatabasepassword, type the password again in the Confirm Password box. 
+
+Note: This is the username/password combo used to log onto your database. Please make note of them somewhere safe.
+
+Choose Next.
+
+Configure advanced settings:
+
+Network & Security
+
+Virtual Private Cloud (VPC)    : default VPC
+
+Subnet group                          : default
+
+Public accessibility                  : Choose Yes
+
+Availability zone                      : default No Preference
+
+VPC security groups               : Select Choose existing
+Remove the default one and select RDS_lab_sg instead.
+
+
+Database Options
+
+Database name             : mydatabase
+
+Keep a note of this database name.
+
+Database port                 : default 3306
+
+DB parameter group       : default
+
+Option group                   : default
+
+IAM DB authentication    : default Disable
+
+Backup
+
+Backup retention period    : 0
+
+Backup window                 : disabled by default
+
+Copy tags To snapshots    : uncheck
+
+Monitoring
+
+Enhanced monitoring        : Choose Disable enhanced monitoring
+
+Log Exports
+
+Not needed for the purpose of this lab.
+
+Maintenance
+
+Auto minor version upgrade     : Choose Disable auto minor version upgrade
+
+Maintenance window                : Choose No Preference
+
+Deletion Protection
+
+Deletion protection    : Uncheck 
+
+Once all the configurations are done properly, click on .
+
+Navigate to .
+
+On the RDS console, the details for the new DB instance appear. The DB instance has a status of creating until the DB instance is ready to use. When the state changes to Available, you can connect to the DB instance. It can take up to 20 minutes before the new instance status becomes Available.
+
+
+
+Task 4 : Connecting to RDS Database on a DB Instance using the MySQL Workbench
+In this example, we will connect to a database on a MySQL DB instance using MySQL monitor commands. One GUI-based application you can use to connect is MySQL workbench, which you have already downloaded and installed based on instructions in the prerequisite section.
+
+To connect to a database on a DB instance using MySQL monitor, find the endpoint (DNS name) and port number for your DB Instance.
+
+Navigate to  and click on mydatabaseinstance.
+
+Under Connectivity & security section, copy and note the endpoint and port.
+
+Endpoint: mydatabaseinstance.cdegnvsebaim.us-east-1.rds.amazonaws.com
+
+Port: 3306
+
+You need both the endpoint and the port number to connect to the DB instance.
+
+Open MySQL Workbench. Click on the plus icon. 
+
+Connection Name    : Enter a sample name MyDatabseConnection
+
+Host Name         : Enter the endpoint → mydatabaseinstance.cdegnvsebaim.us-east-1.rds.amazonaws.com
+
+Port            : 3306
+
+Username        : mydatabaseuser
+
+Password        : Click on Store in keychain and enter password mydatabasepassword. Click on ok.
+
+
+
+Click on  to make sure that you are able to connect to the database properly.
+
+
+Click on ok and ok again to save the connection.
+A database connection will be created in MySQL Workbench
+
+
+
+Double click on it to open the database. Enter the database password if prompted.
+
+After successfully connecting and opening the database, you can create tables and perform various queries over the connected database.
+
+
+
+Navigate to the Schemas tab to see databases available to start doing database operations. More details on database operations are available here.
+
+Task 5 : Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Completion and Conclusion
+You have successfully used AWS management console to create RDS MySQL database instance.
+
+You have configured the details while creating the Amazon RDS instance.
+
+You have used the GUI tool MySQL Workbench to connect to the Amazon RDS instance created.
+
+How to Query into RDS MySQL Using AWS Lambda
+Lab Details
+This lab walks you through the creation of an RDS MySQL Database, creating a table and inserting some values using MySQL Workbench. Now we will create a Lambda function and write MySQL queries to read and write data into the database.
+
+Duration: 60 minutes
+
+AWS Region: US East (N. Virginia)
+
+Prerequisites
+For testing this lab, it is necessary to download the MySql GUI Tool, To download it, go to the Download MySQL Workbench page. Based on your OS, select the respective option under Generally Available (GA) Releases. Download and Install.
+
+
+
+Task Details
+Login to AWS Management Console
+
+Create a security group for RDS Instance
+
+Create an IAM Role
+
+Create RDS Database Instance
+
+Connect to the RDS instance using MySQL Workbench
+
+Create a Lambda function
+
+View the Table data in Lambda
+
+Insert values to RDS from Lambda
+
+Architecture Diagram
+
+
+Launching Lab Environment
+Make sure to sign out of the existing AWS Account before you start a new lab session (if you have already logged into one). Check FAQs and Troubleshooting for Labs , if you face any issues.
+
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+Steps
+
+Create a Security Group for RDS instance
+Make sure you are in the N.Virginia Region.
+
+Click on  and select EC2 under the  section.
+
+On the left panel menu, select the security group under the Network & Security section.
+
+    
+
+Click on the  button.
+
+We are going to create a Security group for RDS with a 3306 port number enabled.
+
+Security group name : Enter RDS_lab_sg
+
+Description: Enter Security group for RDS instance
+
+VPC: Select Default VPC
+
+
+Click on the  button under Inbound rules.
+
+Type: Select MYSQL/Aurora
+
+Source: Select Custom
+
+In the textbox add 0.0.0.0/0
+
+
+
+Leave everything as default and click on the  button.
+
+
+
+Create an IAM Role
+Click on  and select IAM under the  section. 
+
+Select    in the left panel and click on  to create a new IAM role.
+
+Create role :
+
+Select type of trusted entity : Choose   
+
+Choose a use case : Select 
+
+Click on  as shown below in the screenshot:
+
+
+
+Attach permissions policies : 
+
+Type AWSLambdaVPCAccessExecutionRole in the search bar and select .
+
+Type AWSLambdaBasicExecutionRole in the search bar and select 
+
+Click on 
+
+Key : Enter Name
+
+Value : Enter Lambda_RDS_Access
+
+Click on .
+
+On the Create Role Page:
+
+ Role Name :  Enter Lambda_RDS_Role
+
+Note : You can create the role in your desired name and then attach it to the Lambda function.
+
+Role description : Enter IAM Role to access RDS
+
+Click on .
+
+You have successfully created an Lambda role to access the RDS.
+        
+
+Create RDS Database Instance
+Make sure you are in the US East (N. Virginia) us-east-1 Region. 
+
+Navigate to RDS by clicking on the  menu available under the  section.
+
+Click on  in the Create database section.
+
+Click on Switch to your original interface on top of your screen.
+
+
+
+Select Engine:
+
+Select the checkbox in the bottom of the page to see only those settings available under the Free Tier.
+
+Choose , and click on .
+
+Specify DB Details:
+
+Instance specifications
+
+License model            : general-public-license
+
+DB engine version        : Leave it as default version.
+
+DB instance class        : db.t2.micro — 1 vCPU, 1 GiB RAM
+
+Multi-AZ deployment        : default No.
+
+Storage type            : General Purpose (SSD)
+
+Allocated storage        : 20 (default)
+
+Enable storage autoscaling     : Uncheck
+
+Settings : 
+
+DB instance identifier    : Enter myrdsinstance
+
+Master username.         : Enter mydatabaseuser
+
+Master password : Enter mydatabasepassword
+
+Confirm password : Enter mydatabasepassword
+
+Note: This is the username/password combo used to log onto your database. Please make note of them somewhere safe.
+
+Click on the  button.
+Configure advanced settings:
+
+Network & Security
+
+Virtual Private Cloud (VPC)    : default VPC
+
+Subnet group                          : default
+
+Public accessibility                  : Choose Yes
+
+Availability zone                      : default No Preference
+
+VPC security groups               : Select Choose existing
+Remove the default one and select RDS_lab_sg instead.
+
+
+Database Options
+
+Note : We are not providing the Database name because we will be creating one database through MySQL Workbench. Database name is optional.
+
+Database port                 : default 3306
+
+DB parameter group       : default
+
+Option group                   : default
+
+IAM DB authentication    : default Disable
+
+Backup
+
+Backup retention period    : Select 0 days
+
+Backup window                 : disabled by default
+
+Copy tags To snapshots    : uncheck
+
+Monitoring
+
+Enhanced monitoring        : Choose Disable enhanced monitoring
+
+Log Exports
+
+Not needed for the purpose of this lab.
+
+Maintenance
+
+Auto minor version upgrade     : Choose Disable auto minor version upgrade
+
+Maintenance window                : Choose No Preference
+
+Deletion Protection
+
+Deletion protection    : Uncheck 
+
+Once all the configurations are done properly.
+
+Click on the  button.
+
+Now click on .
+
+On the RDS console, the details for the new DB instance appear. The DB instance has a status of creating until the DB instance is ready to use. 
+
+
+
+When the state changes to Available, you can connect to the DB instance. It can take up to 20 minutes before the new instance status becomes Available.
+
+
+
+Connecting to RDS Database on a DB Instance using the MySQL Workbench
+     One GUI-based application you can use to connect is MySQL workbench, which you have already downloaded and installed based on instructions in the prerequisite section.
+
+To connect to a database on a DB instance using MySQL monitor, find the endpoint (DNS name) and port number for your DB Instance.
+
+Navigate to  and click on myrdsinstance.
+
+Under Connectivity & security section, copy and note the endpoint and port. (example)
+
+Endpoint : myrdsinstance.cdegnvsebaim.us-east-1.rds.amazonaws.com
+
+Port : 3306
+
+Open MySQL Workbench. Click on the plus icon. 
+
+Connection Name    : Enter a sample name MyDatabseConnection
+
+Connection Method : Select Standard (TCP/IP)
+
+Host Name         : Enter your RDS endpoint → myrdsinstance.cdegnvsebaim.us-east-1.rds.amazonaws.com
+
+Port            : 3306
+
+Username        : mydatabaseuser
+
+Password        : Click on Store in keychain / Store in Vault and enter password mydatabasepassword Click on the OK button.
+
+       
+
+A database connection will be created in MySQL Workbench
+
+
+
+Double click on it to open the database. Enter the database password if prompted.
+
+Wait for a few seconds to connect to your RDS Machine.
+
+        
+
+if you see a similar screen as shown below then you have successfully connected to the RDS.
+
+          
+
+Now copy the below MySQL command and paste it in the Query tab,
+
+ 
+CREATE DATABASE StudentDB;
+
+ 
+Use StudentDB;
+
+ 
+CREATE TABLE students (
+
+studentId INT AUTO_INCREMENT,
+
+studentName VARCHAR(50) NOT NULL,
+
+Course VARCHAR(55),Semester VARCHAR(50) NOT NULL,PRIMARY KEY (studentId));
+
+ 
+INSERT INTO students(studentName, Course, Semester) VALUES ('Paul', 'MBA', 'Second');
+
+INSERT INTO students(studentName, Course, Semester) VALUES ('John', 'IT', 'Third');
+
+INSERT INTO students(studentName, Course, Semester) VALUES ('Sebastian', 'Medicine', 'fifth');
+
+ 
+SELECT * FROM students;
+
+ 
+
+MySQL Query Explanation : 
+
+Create a Database StudentDB. (CREATE DATABASE StudentDB;)
+
+Select the database (Use StudentDB;)
+
+Create a table student with fields - student id, stunentName, Course and Semester. (CREATE TABLE students (studentId INT AUTO_INCREMENT, studentName VARCHAR(50) NOT NULL, Course VARCHAR(55),Semester VARCHAR(50) NOT NULL,PRIMARY KEY (studentId));)
+
+Insert three values to the table. (INSERT INTO students(studentName, Course, Semester) VALUES ('Paul', 'MBA', 'Second');)
+
+View the table data. (SELECT * FROM students;)
+
+Now Click on the  icon to start the execution and wait for a few minutes.
+
+        
+
+Now You will be able to see the students table with these following values.
+
+        
+
+Don't close the MySQL workbench window, keep it as minimized.
+
+Create a Lambda function
+Navigate to the   menu at the top, then click on  under the  section.
+
+Click on  
+
+Select Author from Scratch
+
+Function Name : Enter MyRDSLambda
+
+Runtime : Select Python 3.8
+
+Permissions : 
+
+Change default execution role : Select 
+
+ Existing Role : Enter Lambda_RDS_Role
+
+Click on  Button.
+
+Once the Lambda Function is created successfully, it will look like the screenshot below:
+
+        
+
+Click on this link function code to download the Lambda zip code
+
+Function code : Click on right side  button and select .
+
+Click on the  button and select the Zip file that we just downloaded and the click on the  button.
+
+Go to  inside lambda_function.py, 
+
+Go to line 5 and replace the endpoint, username and password in the python code with your values and click on the  button.
+
+         
+
+Lambda code explanation : 
+
+The zip file contains pre installed python module  used for performing MySQL queries in Python.
+
+First we provide the RDS endpoint, username, password and database values.
+
+Create a  connection to the RDS instance.
+
+Perform MySQL query “SELECT * FROM students” to fetch the table data.
+
+Create a json value and print the table data in the lambda function.
+
+Now click on the  button,
+
+Event name : Enter TestRDS
+
+Leave everything as default
+
+Click the  button.
+
+Now again click on the  button and you will be able to see the students table values in the Lambda output (JSON).
+
+        
+
+Scroll down the Execution result : (String)
+
+        
+
+Go to  inside lambda_function.py
+
+Now replace the existing code with the below : 
+
+Click on the link Lambda code 2 and copy the python code and replace the existing code in  lambda_function.py.
+
+On line number 5, replace the endpoint, username and password in the python code with your values and click on the  button.
+
+        
+
+Lambda code explanation : 
+
+This code is used to insert a value into the students table.
+
+First we provide the RDS endpoint, username, password and database values.
+
+Create a  connection to the RDS instance.
+
+Perform MySQL query “INSERT INTO students(studentName, Course, Semester) VALUES ('Elizabeth', 'Art', 'first')” to insert value into the table.
+
+Click on the  button and you will get an insertion success message in lambda response.
+
+         
+
+Now navigate to the MySQL Workbench application and replace the existing query with the below.
+
+Use StudentDB;
+
+SELECT * FROM students;
+
+         
+
+Now Click on the  icon to start the execution and wait for a few minutes.
+
+         Note : Since the MySQL workbench was not active for a long time,it will take a few minutes to complete the execution. if you find difficulty then please close the connection and reconnect to RDS again from MySQL Workbench.
+
+You will be able to see the new row that we just added to the table through the Lambda function.
+
+         
+
+Completion and Conclusion
+You have successfully logged into AWS management console.
+
+You have successfully created a security group for RDS instance.
+
+You have successfully created an IAM Role for lambda function.
+
+You have successfully created a RDS Instance.
+
+You have successfully connected to RDS using MySQL workbench.
+
+You have successfully created a Lambda function.
+
+Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+           
+
+Delete AWS Resources
+Delete Lambda Function
+Make sure you are in the US East (N. Virginia) us-east-1 Region.
+
+Navigate to Lambda by clicking on the  menu at the top, then click on in the  section.
+
+Select the lambda function MyRDSLambda and click  and click  button.
+
+    
+
+Click the  button to confirm deletion.
+
+Delete RDS Instance
+Make sure you are in the US East (N. Virginia) us-east-1 Region. 
+
+Navigate to RDS by clicking on the  menu available under the  section.
+
+Select  form the left side menu.
+
+Select the RDS instance myrdsinstance and click on  and select .
+
+Confirmation Prompt : 
+
+Uncheck the option create the final snapshot
+
+Check the I Acknowledge option
+
+In textbox : Enter delete me
+
+Now click on the  button.
+
+         
+
+Now click on the refresh button and you will be able to see that the status of the RDS instance is deleting. It will take 10 to 20 Minutes to delete the instance.
+
+Introduction to AWS Elastic Load Balancing
+Lab Details
+This lab walks you through AWS Elastic Load Balancing. Elastic Load Balancing automatically distributes incoming application traffic across multiple Amazon EC2 instances in the cloud. In this lab, we will demonstrate elastic load balancing with 2 EC2 Instances.
+
+Duration: 30 minutes
+
+AWS Region: US East (N. Virginia) us-east-1
+
+Introduction
+What is Elastic Load Balancing?
+ELB is a service that automatically distributes incoming application traffic and scale resources to meet traffic demands.
+
+ELB helps in adjusting capacity according to incoming application and network traffic.
+
+ELB can be enabled within a single availability zone or across multiple availability zones to maintain consistent application performance.
+
+ELB offers features like:
+
+Detection of unhealthy EC2 instances.
+
+Spreading EC2 instances across healthy channels only.
+
+Centralized management of SSL certificates.
+
+Optional public key authentication.
+
+Support for both IPv4 and IPv6.
+
+ELB accepts incoming traffic from clients and routes requests to its registered targets.
+
+When an unhealthy target or instance is detected, ELB stops routing traffic to it and resumes only when the instance is healthy again.
+
+ELB monitors the health of its registered targets and ensures that the traffic is routed only to healthy instances.
+
+ELB's are configured to accept incoming traffic by specifying one or more listeners. A listener is a process that checks for connection requests.
+
+Listeners are configured with a protocol and port number from the client to the ELB and vice-versa i.e., back from ELB to the client.
+
+ELB supports 3 types of load balancers:
+
+ Application Load Balancers
+
+Network Load Balancers
+
+Classic Load Balancers
+
+Each load balancer is configured differently.
+
+For Application and Network Load Balancers, you register targets in target groups and route traffic to target groups.
+
+For Classic Load Balancers, you register instances with the load balancer.
+
+AWS recommends users to work with Application Load Balancer to use multiple Availability Zones because if one availability zone fails, the load balancer can continue to route traffic to the next available one.
+
+We can have our load balancer be either internal or internet-facing.
+
+The nodes of an internet-facing load balancer have Public IP addresses, and the DNS name is publicly resolvable to the Public IP addresses of the nodes.
+
+Due to the point above, internet-facing load balancers can route requests from clients over the Internet.
+
+The nodes of an internal load balancer have only Private IP addresses, and the DNS name is publicly resolvable to the Private IP addresses of the nodes.
+
+Due to the point above, internal load balancers can only route requests from clients with access to the VPC for the load balancer.
+
+Both internet-facing and internal load balancers route requests to your targets using Private IP addresses.
+
+Your targets do not need Public IP addresses to receive requests from an internal or an internet-facing load balancer.
+
+Task Details
+Log into AWS Management Console.
+
+Launch two EC2 Instances using a Bash script to install Apache httpd and publish a sample HTML page.
+
+Register the EC2 Instances with ELB.
+
+Create an application ELB with a public IP.
+
+Simulate an EC2 failover by using the public DNS of the ELB.
+
+Architecture Diagram
+                 
+
+ 
+Lab Steps
+Task 1 : Launching Lab Environment
+Launch lab environment by clicking on . This will create an AWS environment with the resources required for this lab.
+
+Once your lab environment is created successfully,  will be active. Click on , this will open your AWS Console Account for this lab in a new tab. If you are asked to logout in AWS Management Console page, click on the here link and then click on  again.
+
+If you have logged into other aws accounts in the same browser, after clicking on the , you will be redirected to a page asking you to logout from the other aws account. 
+
+ 
+Note : If you have completed one lab, make sure to sign out of the AWS account before starting a new lab. If you face any issues, please go through FAQs and Troubleshooting for Labs.
+
+Task 2 : Launching First EC2 Instance
+Make sure you are in the N.Virginia Region.
+
+Navigate to the  menu. Click on  in the  section.
+
+Click on from the left side bar and then click on 
+
+Choose an Amazon Machine Image (AMI): Search for Amazon Linux 2 AMI in the search box and click on the select button.
+
+
+Choose an Instance Type : Leave it to the default   and click on 
+
+Configure Instance Details:
+
+Auto-assign Public IP : Select Enable
+
+Under the User data: section, enter the following script to create an HTML page served by an Apache httpd web server.
+
+#!/bin/bash
+
+sudo su
+
+yum update -y
+
+yum install httpd -y
+
+systemctl start httpd
+
+systemctl enable httpd
+
+echo "<html><h1> Welcome to Whizlabs Server 1 </h1><html>" > /var/www/html/index.html
+
+Note: After pasting the user data, make sure to remove extra spacing.
+
+Leave the rest of the fields as default and click on .
+Add Storage : No need to change anything in this step, Click on 
+
+Add Tags : To easily identify your instances, you can add a tag with key pair combination.
+
+Key    : Name
+
+Value: MyEC2Server1
+
+ Click on .
+
+Configure Security Group : Create a new security group,
+
+Security group name: MyWebserverSG
+
+Description : My EC2 Security Group
+
+To add SSH:
+
+Choose Type: 
+
+Source: Anywhere (From ALL IP addresses accessible).
+
+For HTTP, click on ,
+
+Choose Type: 
+
+Source: Anywhere (From ALL IP addresses accessible).
+
+For HTTPS, click on ,
+
+Choose Type: 
+
+Source:    Anywhere (From ALL IP addresses accessible).
+
+Click on .
+
+Review and Launch : Review all your select settings and click on the.
+
+Key Pair: Select Create a new key Pair  from the dropdown list and enter MyWebKey 
+
+Click on  and store them on your local machine.
+
+ Click on .
+
+Your instances are now launching. Navigate to the EC2 instance page.
+
+Task 3 : Launching Second EC2 Instances
+Click on 
+
+Choose an Amazon Machine Image (AMI): 
+
+Choose an Instance Type : Leave it to the default   and click on 
+
+Configure Instance Details:
+
+Auto-assign Public IP : Enable 
+
+Under the User data: section, enter the following script to create an HTML page served by Apache httpd web server:
+
+#!/bin/bash  
+
+sudo su
+
+yum update -y
+
+yum install httpd -y
+
+systemctl start httpd
+
+systemctl enable httpd
+
+echo "<html><h1> Welcome to Whizlabs Server 2 </h1><html>" > /var/www/html/index.html
+
+
+Note: After pasting the user data, make sure to remove extra spacing.
+
+Leave the rest of the fields as default and click on .
+Add Storage : No need to change anything in this step, Click on  .
+
+Add Tags : For identification of your instances, you can add a tag with a key pair combination
+
+Key    : Name
+
+Value: Enter MyEC2Server2
+
+ Click on .
+
+Configure Security Group : Select  Select an existing security group,
+
+Select MyWebserverSG  Security Group from the list.
+Click on .
+Review and Launch : Review all your select settings and click on .
+
+Key Pair: Select Choose an Existing Key pair from the dropdown list and then MyWebKey from the list.
+
+Check the   checkbox and  then click on .
+
+Your instances are now launching. Navigate to the EC2 instance page and wait until the status changes to the . It will usually take 1-2 minutes.
+
+
+
+Task 4 : Creating the Load Balancer and Target Group
+In the left side menu, scroll down to the bottom and select 
+
+Click on .
+
+Select Load Balancer Type: Under the , click on .
+
+The next five screens will require some custom configurations. If a field is not mentioned, leave it as default or empty.
+
+Configure Load Balancer:
+
+Name: MyLoadBalancer
+
+Scheme: Select  (an Internet-facing load balancer routes requests from clients over the Internet to targets).
+
+IP address type: IPv4
+
+Listeners: 
+
+Load Balancer Protocol : HTTP
+
+Load Balancer Port  : 80
+
+VPC: default VPC. (scroll down)
+
+Availability zones: Select all available zones using the checkbox
+
+Tags: 
+
+Key : Name
+
+Value : MyLoadBalancer
+
+Configure Security Settings: No Changes needed, leave the warning on top. Then click on .
+
+Configure Security Groups: Select Select an existing security group and choose MyWebserverSG (the Security Group already created during EC2 instances launch).
+
+Note: You can also create a new Security Group with HTTP  port 80 open (0.0.0.0/0). 
+
+Click on 
+Configure Routing: 
+
+Target group: New Target Group
+
+Target group name : MyTargetGroup
+
+Leave other settings as default.
+
+Under Health check settings : 
+
+Path : /index.html
+
+Under Advanced health check settings:
+
+Port: Traffic port (Default)
+
+Healthy threshold : 3
+
+Unhealthy threshold: 2 (Default)
+
+Timeout: 5 seconds (Default)
+
+Interval: 6 seconds
+
+Success codes: 200 (Default)
+
+Click on 
+
+Register Targets:
+
+We need two EC2 instances in the target group of the load balancer.
+
+Under Instances, select the two EC2 instances (MyEC2Server1, MyEC2Server2) from the list.
+Click on 
+
+
+Both of the EC2 instances will be added under Registered Targets.
+
+
+Next, click on  
+Review: Check your inputs and then click  
+
+You will now see the message Successfully created load balancer. Click on.
+
+Task 5 : Testing the Elastic Load Balancer
+Click on  from the left menu section.
+
+Select MyTargetGroup and navigate to the  menu.
+
+Wait until the status column of the instances changes to healthy (this means both web servers have passed ELB health check)
+
+
+
+Next, navigate to  and notice the state of ELB is active. Copy the DNS name of the  ELB and enter the address in the browser.
+
+DNS Example: MyLoadBalancer-913911171.us-east-1.elb.amazonaws.com
+
+You should see the index.html page content of Web Server 1 or Web Server 2
+
+
+
+Now Refresh the page a few times.You will observe that the index pages change each time you refresh.
+
+Note: The ELB is equally dividing the incoming traffic to both servers in a Round Robin  manner.
+
+For testing if ELB is working properly, 
+
+In the left side menu, scroll up and navigate back to the  page.
+
+Select MyEC2Server1, click on Actions and Instance State, and Stop the EC2 instance.
+
+
+
+Once MyEC2Server1 is stopped, navigate to  . Select the MyTargetGroup, Click on the.
+It will say that the stopped instance MyEC2Server1 is unused.
+
+
+Refresh the ELB domain name URL in Browser, and notice the HTML webpage remains visible. The ELB is only rendering the HTML page from the MyEC2Server2 instance.
+
+
+Task 6 : Validation Test
+Once the lab steps are completed, please click on the  button on the right side panel.
+
+This will validate the resources in the AWS account and displays whether you have completed this lab successfully or not.
+
+Sample output : 
+
+
+
+Task 7 : Resource deletion: Load balancer
+In the EC2 console, navigate to in the left-side panel.
+MyLoadBalancer will be listed here.
+
+To delete the load balancer, need to perform the following actions:
+Select the load balancer, 
+Click on the Actions button,
+select the Delete option.
+
+Confirm by clicking on the Yes, Delete button when a pop-up is shown.
+
+Web-server-LG will be deleted immediately.
+Resource deletion: Target groups
+In the EC2 console, navigate to in the left-side panel.
+MyTargetGroup will be listed here.
+
+To delete the target group, need to perform the following actions:
+Select the load balancer, 
+Click on the Actions button,
+select the Delete option
+
+ 
+Confirm by clicking on the Yes, delete button when a pop-up is shown.
+
+ 
+MyTargetGroup will be deleted immediately.
+
+Resource deletion: Terminate EC2 Instances
+In the EC2 console, navigate to in the left-side panel.
+2 EC2 Instance MyEC2Server1 and MyEC2Server2 will be listed here.
+
+To terminate the EC2 Instances, need to perform the following actions:
+Select the EC2 instances, 
+Click on the Instance state button,
+select the Terminate instance option
+
+ 
+Confirm by clicking on the Terminate button when a pop-up is shown.
+
+ 
+EC2 Instances will be terminated immediately.
+
+Completion and Conclusion
+You have created two EC2 instances with a bash script that installed Apache servers and created sample html pages and published them.
+
+You created a Load Balancer and Target group.
+
+You added both EC2 instances in the Load balancer Target group.
+
+You have tested the Elastic Load Balancer by refreshing and simulating a shutdown of an EC2 Instance.
+
